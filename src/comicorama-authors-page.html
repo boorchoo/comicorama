@@ -12,15 +12,52 @@
       :host {
         display: block;
         @apply(--layout-fit);
+        padding: 16px;
         overflow: auto;
+      }
+
+      .letter {
+        @apply(--comicorama-font-title1);
+        padding-left: 42px;
+        border-bottom: dotted 1px #b3b3b3;
+      }
+
+      .container {
+        display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-wrap);
+        padding: 16px 64px;
+        padding-left: 142px;
+      }
+
+      .author {
+        width: 25%;
+      }
+
+      .author a {
+        @apply(--comicorama-font);
+        font-size: 1.4rem;
+        text-decoration: none;
+        text-transform: none;
+        color: #000000;
+        cursor: pointer;
+      }
+
+      .author a:hover {
+        text-decoration: underline;
       }
     </style>
 
-     <comicorama-service-call method="GetAuthors" params="{{authorsParams}}" result="{{authorsResult}}"></comicorama-service-call>
+    <comicorama-service-call method="GetAuthors" params="{{authorsParams}}" result="{{authorsResult}}"></comicorama-service-call>
 
-     <template is="dom-repeat" items="[[authorsResult.author]]" as="author" sort="sortByName">
-        <div><a href="[[getAuthorRoutePath(author)]]">[[author.name]]</a></div>
-      </template>
+    <template is="dom-repeat" items="[[alphabet]]" as="letter">
+      <div class="letter">[[letter]]</div>
+      <div class="container">
+        <template is="dom-repeat" items="[[getAuthorsByLetter(authorsResult, letter)]]" as="author" sort="sortAuthorsByName">
+          <div class="author"><a href="[[getAuthorRoutePath(author)]]">[[author.name]]</a></div>
+        </template>
+      </div>
+    </template>
   </template>
 
   <script>
@@ -33,8 +70,21 @@
       ready: function () {
         this.title = 'Authors';
         this.authorsParams = {};
+        this.alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
       },
-      sortByName: function(a, b) {
+      getAuthorsByLetter: function (authorsResult, letter) {
+        if (!authorsResult || !authorsResult.author || !letter) {
+          return null;
+        } 
+        var authors = [];
+        for (var i in authorsResult.author) {
+          if (authorsResult.author[i].name.substr(0, 1) === letter) {
+            authors.push(authorsResult.author[i]);
+          }
+        }
+        return authors;
+      },
+      sortAuthorsByName: function (a, b) {
         var nameA = a.name.toUpperCase();
         var nameB = b.name.toUpperCase();
         if (nameA < nameB) {

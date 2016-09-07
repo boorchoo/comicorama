@@ -36,7 +36,7 @@
 
     <div id="container">
       <comicorama-list disabled="{{offscreen}}">
-        <template is="dom-repeat" items="[[booksResult.book]]" as="book">
+        <template is="dom-repeat" items="[[booksResult.book]]" as="book" filter="bookHasCover">
           <comicorama-list-item front-cover="[[getBookCover(book)]]" back-cover="[[getBookCover(book)]]" route-path="[[getBookRoutePath(book)]]"></comicorama-list-item>
         </template>
       </comicorama-list>
@@ -113,6 +113,9 @@
           };
         }
         return null;
+      },
+      bookHasCover: function (book) {
+        return !(!book || !book.cover);
       }
     });
   </script>

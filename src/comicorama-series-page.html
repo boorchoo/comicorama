@@ -26,8 +26,8 @@
     <comicorama-service-call method="GetSeries" params="{{seriesParams}}" result="{{seriesResult}}"></comicorama-service-call>
 
     <comicorama-list disabled="{{offscreen}}">
-      <template is="dom-repeat" items="[[seriesResult.series]]">
-        <comicorama-list-item front-cover="[[getSeriesFrontCover(item)]]" back-cover="[[getSeriesBackCover(item)]]" route-path="[[getSeriesRoutePath(item)]]"></comicorama-list-item>
+      <template is="dom-repeat" items="[[seriesResult.series]]" as="series" sort="sortSeriesByTitle">
+        <comicorama-list-item front-cover="[[getSeriesFrontCover(series)]]" back-cover="[[getSeriesBackCover(series)]]" route-path="[[getSeriesRoutePath(series)]]"></comicorama-list-item>
       </template>
     </comicorama-list>
   </template>
@@ -42,6 +42,17 @@
       ready: function () {
         this.title = 'Series';
         this.seriesParams = {};
+      },
+      sortSeriesByTitle: function (a, b) {
+        var titleA = a.title.toUpperCase();
+        var titleB = b.title.toUpperCase();
+        if (titleA < titleB) {
+          return -1;
+        }
+        if (titleA > titleB) {
+          return 1;
+        }
+        return 0;
       }
     });
   </script>
