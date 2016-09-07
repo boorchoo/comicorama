@@ -29,15 +29,15 @@
       }
     </style>
 
-    <app-route route="{{route}}" pattern="/:idseries" data="{{routeData}}"></app-route>
+    <app-route route="{{route}}" pattern="/:context/:id" data="{{routeData}}"></app-route>
 
-    <comicorama-service-call method="GetSeries" params="[[getSeriesParams(routeData)]]" result="{{seriesResult}}"></comicorama-service-call>
+    <comicorama-service-call method="[[getContextMethod(routeData)]]" params="[[getContextParams(routeData)]]" result="{{contextResult}}"></comicorama-service-call>
     <comicorama-service-call method="GetBooks" params="[[getBooksParams(routeData)]]" result="{{booksResult}}"></comicorama-service-call>
 
     <div id="container">
       <comicorama-list disabled="{{offscreen}}">
-        <template is="dom-repeat" items="[[booksResult.book]]">
-          <comicorama-list-item front-cover="[[getBookCover(item)]]" back-cover="[[getBookCover(item)]]" route-path="[[getBookRoutePath(item)]]"></comicorama-list-item>
+        <template is="dom-repeat" items="[[booksResult.book]]" as="book">
+          <comicorama-list-item front-cover="[[getBookCover(book)]]" back-cover="[[getBookCover(book)]]" route-path="[[getBookRoutePath(book)]]"></comicorama-list-item>
         </template>
       </comicorama-list>
     </div>
@@ -51,31 +51,68 @@
         ComicoramaCommonBehavior
       ],
       observers: [
-        '_onSeriesResultChanged(seriesResult)'
+        '_onContextResultChanged(contextResult)'
       ],
-      _onSeriesResultChanged: function (seriesResult) {
-        var title = !seriesResult || !seriesResult.series || !seriesResult.series[0] || !seriesResult.series[0].title ? null : seriesResult.series[0].title;
+      _onContextResultChanged: function (contextResult) {
+        var title = null;
+        if (this.routeData && typeof this.routeData.context === 'string' && contextResult) {
+          if (this.routeData.context === 'series') {
+            title = !contextResult.series || !contextResult.series[0] || !contextResult.series[0].title ? null : contextResult.series[0].title;
+          }
+          if (this.routeData.context === 'author') {
+            title = !contextResult.author || !contextResult.author[0] || !contextResult.author[0].name ? null : contextResult.author[0].name;
+          }
+        }
         if (this.title !== title) {
           this.set('title', title);
         }
       },
-      getSeriesParams: function (routeData) {
-        this.set('seriesResult', null);
-        if (!routeData || !routeData.idseries) {
+      getContextMethod: function (routeData) {
+        this.set('contextResult', null);
+        if (!routeData || typeof routeData.context !== 'string' || !routeData.id) {
           return null;
         }
-        return {
-          idseries: routeData.idseries
-        };
+        if (routeData.context === 'series') {
+          return "GetSeries";
+        }
+        if (routeData.context === 'author') {
+          return "GetAuthors";
+        }
+        return null;
+      },
+      getContextParams: function (routeData) {
+        this.set('contextResult', null);
+        if (!routeData || typeof routeData.context !== 'string' || !routeData.id) {
+          return null;
+        }
+        if (routeData.context === 'series') {
+          return {
+            idseries: routeData.id
+          };
+        }
+        if (routeData.context === 'author') {
+          return {
+            idauthor: routeData.id
+          };
+        }
+        return null;
       },
       getBooksParams: function (routeData) {
         this.set('booksResult', null);
-        if (!routeData || !routeData.idseries) {
+        if (!routeData || typeof routeData.context !== 'string' || !routeData.id) {
           return null;
         }
-        return {
-          idseries: routeData.idseries
-        };
+        if (routeData.context === 'series') {
+          return {
+            idseries: routeData.id
+          };
+        }
+        if (routeData.context === 'author') {
+          return {
+            idauthor: routeData.id
+          };
+        }
+        return null;
       }
     });
   </script>
