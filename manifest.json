@@ -1,0 +1,6 @@
+{
+  "name": "Comicorama",
+  "short_name": "Comicorama",
+  "start_url": "/",
+  "display": "standalone"
+}

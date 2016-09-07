@@ -1,0 +1,160 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<link rel="import" href="comicorama-menu.html">
+<link rel="import" href="comicorama-menu-item.html">
+
+<dom-module id="comicorama-home-page">
+  <template>
+    <style include="comicorama-styles iron-flex iron-flex-alignment">
+      :host {
+        display: block;
+        padding-bottom: 5rem;
+        @apply(--layout-horizontal);
+      }
+
+      #exlibrisContainer {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      #exlibris {
+        width: 75%;
+        @apply(--layout-self-center);
+      }
+
+      .menu-page {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      comicorama-menu {
+        padding-right: 20%;
+      }
+
+      comicorama-menu-item {
+        --comicorama-menu-item-title: {
+          @apply(--comicorama-font-title2);
+          line-height: 6rem;
+          color: #b3b3b3;
+          transition: color 0.5s;
+        };
+
+        --comicorama-menu-item-title-active: {
+          color: #000000;
+        };
+      }
+    </style>
+    
+    <div id="exlibrisContainer">
+      <img id="exlibris" src="/img/comicorama-exlibris.svg" />
+    </div>
+    <neon-animated-pages class="flex"
+      attr-for-selected="id"
+      selected="{{selectedPage}}"
+      fallback-selection="mainMenuPage"
+      on-iron-select="_stopPropagation"
+      on-iron-deselect="_stopPropagation"
+      on-neon-animation-finish="_stopPropagation">
+      <neon-animatable id="mainMenuPage" class="menu-page" animation-config="{{mainMenuPageAnimationConfig}}">
+        <comicorama-menu selected="{{mainMenuSelected}}">
+          <comicorama-menu-item title="Browse" route-path="#browseMenuPage"></comicorama-menu-item>
+          <comicorama-menu-item title="Search" disabled></comicorama-menu-item>
+          <comicorama-menu-item title="Playground" disabled></comicorama-menu-item>
+        </comicorama-menu>
+      </neon-animatable>
+      <neon-animatable id="browseMenuPage" class="menu-page" animation-config="{{browseMenuPageAnimationConfig}}">
+        <comicorama-menu selected="{{browseMenuSelected}}">
+          <comicorama-menu-item title="Series" route-path="/series"></comicorama-menu-item>
+          <comicorama-menu-item title="Authors" route-path="/series"></comicorama-menu-item>
+          <comicorama-menu-item title="Back" route-path="#mainMenuPage" not-animated></comicorama-menu-item>
+        </comicorama-menu>
+      </neon-animatable>
+    </neon-animated-pages>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-home-page',
+      properties: {
+        mainMenuPageAnimationConfig: {
+          value: function() {
+            return {
+              'entry': {
+                name: 'fade-in-animation',
+                node: this.$.mainMenuPage,
+                timing: {
+                  duration: 1000
+                }
+              },
+              'exit': {
+                name: 'fade-out-animation',
+                node: this.$.mainMenuPage,
+                timing: {
+                  duration: 1000
+                }
+              }
+            };
+          }
+        },
+        browseMenuPageAnimationConfig: {
+          value: function() {
+            return {
+              'entry': {
+                name: 'slide-from-right-animation',
+                node: this.$.browseMenuPage,
+                timing: {
+                  duration: 1000
+                }
+              },
+              'exit': {
+                name: 'fade-out-animation',
+                node: this.$.browseMenuPage,
+                timing: {
+                  duration: 1000
+                }
+              }
+            };
+          }
+        }
+      },
+      behaviors: [
+        ComicoramaPageBehavior
+      ],
+      listeners: {
+        'comicorama-change-route': '_onChangeRoute'
+      },
+      _onChangeRoute: function (e) {
+        if (e.detail.path.substr(0, 1) === '#') {
+          this.selectedPage = e.detail.path.substr(1);
+          if (this.selectedPage === 'mainMenuPage') {
+            this.mainMenuSelected = null;
+            this.browseMenuSelected = null;
+          }
+          e.stopPropagation();
+        }
+      },
+      _stopPropagation: function (e) {
+        e.stopPropagation();
+      },
+      ready: function () {
+        this.title = '';
+      },
+      onExitFinish: function () {
+        this.selectedPage = null;
+        this.mainMenuSelected = null;
+        this.browseMenuSelected = null;
+      }
+    });
+  </script>
+</dom-module>

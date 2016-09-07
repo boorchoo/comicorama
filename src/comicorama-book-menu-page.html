@@ -1,0 +1,75 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<dom-module id="comicorama-book-menu-page">
+  <template>
+    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      comicorama-menu {
+        padding-right: 20%;
+      }
+
+      comicorama-menu-item {
+        --comicorama-menu-item-title: {
+          @apply(--comicorama-font-title2);
+          line-height: 6rem;
+          color: #b3b3b3;
+          transition: color 0.5s;
+        };
+
+        --comicorama-menu-item-title-active: {
+          color: #000000;
+        };
+      }
+    </style>
+
+    <comicorama-menu selected="{{selected}}">
+      <comicorama-menu-item title="Credits" route-path="#credits" hidden="[[!data.author]]"></comicorama-menu-item>
+      <comicorama-menu-item title="Contents" route-path="#contents" hidden="[[!data.book]]"></comicorama-menu-item>
+      <comicorama-menu-item title="Related" route-path="#related" hidden="[[!data.related_book]]"></comicorama-menu-item>
+    </comicorama-menu>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-book-menu-page',
+      properties: {
+        animationConfig: {
+          value: function() {
+            return {
+              'entry': {
+                name: 'fade-in-animation',
+                node: this,
+                timing: {
+                  duration: 1000
+                }
+              },
+              'exit': {
+                name: 'fade-out-animation',
+                node: this,
+                timing: {
+                  duration: 1000
+                }
+              }
+            };
+          }
+        }
+      },
+      behaviors: [
+        ComicoramaPageBehavior
+      ],
+      onEntryStart: function () {
+        this.selected = null;
+      }
+    });
+  </script>
+</dom-module>

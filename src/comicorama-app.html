@@ -1,0 +1,102 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="comicorama-page-selector-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<link rel="import" href="comicorama-home-page.html">
+<link rel="import" href="comicorama-series-page.html">
+<link rel="import" href="comicorama-books-page.html">
+<link rel="import" href="comicorama-book-page.html">
+
+<dom-module id="comicorama-app">
+  <template>
+    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+      }
+
+      app-header {
+        height: 6rem;
+        background-color: white;
+      }
+
+      app-header app-toolbar {
+        height: 6rem;
+      }
+
+      app-header app-toolbar img.logo {
+        height: 5rem;
+        padding-top: 8px;
+      }
+
+      app-header app-toolbar div {
+        padding-left: 16px;
+        overflow: hidden;
+        @apply(--comicorama-font-title1);
+      }
+
+      neon-animated-pages {
+        overflow: hidden;
+      }
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    
+    <app-route route="{{route}}" pattern="/books" tail="{{booksRoute}}"></app-route>
+    <app-route route="{{route}}" pattern="/book" tail="{{bookRoute}}"></app-route>
+    <!-- NOTE: We have to set subroutes before setting main route to avoid showing old data -->
+    <app-route route="{{route}}" pattern="/:page" data="{{routeData}}"></app-route>
+
+    <app-header-layout fullbleed has-scrolling-region>
+      <app-header fixed shadow="{{page.scrolled}}">
+        <app-toolbar>
+          <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
+          <div main-title>{{mainTitle}}</div>
+        </app-toolbar>
+      </app-header>
+      <neon-animated-pages id="pages"
+        class="fit"
+        attr-for-selected="id"
+        selected="{{routeData.page}}"
+        selected-item="{{page}}"
+        fallback-selection="home">
+        <comicorama-home-page id="home"></comicorama-home-page>
+        <comicorama-series-page id="series"></comicorama-series-page>
+        <comicorama-books-page id="books" route="{{booksRoute}}"></comicorama-books-page>
+        <comicorama-book-page id="book" route="{{bookRoute}}"></comicorama-book-page>
+      </neon-animated-pages>
+    </app-header-layout>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-app',
+      behaviors: [
+        ComicoramaPageSelectorBehavior
+      ],
+      listeners: {
+        'comicorama-change-route': '_onChangeRoute',
+        'comicorama-change-app-header': '_onChangeAppHeader'
+      },
+      _onChangeRoute: function (e) {
+        this.set('route.path', e.detail.path);
+      },
+      _onChangeAppHeader: function () {
+        if (this.page && typeof this.page.title === 'string' && this.mainTitle !== this.page.title) {
+          this.set('mainTitle', this.page.title);
+        }
+        this.notifyPath('page.scrolled');
+      }
+    });
+  </script>
+</dom-module>

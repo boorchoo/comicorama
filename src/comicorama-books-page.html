@@ -1,0 +1,82 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+<link rel="import" href="comicorama-common-behavior.html">
+
+<link rel="import" href="comicorama-service-call.html">
+<link rel="import" href="comicorama-list.html">
+<link rel="import" href="comicorama-list-item.html">
+
+<dom-module id="comicorama-books-page">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        @apply(--layout-fit);
+        overflow: auto;
+
+        --comicorama-list-item-width: 210px;
+        --comicorama-list-item-height: 297px;
+        --comicorama-list-item-margin: 4px;
+      }
+
+      #container {
+        display: block;
+        min-height: 100%;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+    </style>
+
+    <app-route route="{{route}}" pattern="/:idseries" data="{{routeData}}"></app-route>
+
+    <comicorama-service-call method="GetSeries" params="[[getSeriesParams(routeData)]]" result="{{seriesResult}}"></comicorama-service-call>
+    <comicorama-service-call method="GetBooks" params="[[getBooksParams(routeData)]]" result="{{booksResult}}"></comicorama-service-call>
+
+    <div id="container">
+      <comicorama-list disabled="{{offscreen}}">
+        <template is="dom-repeat" items="[[booksResult.book]]">
+          <comicorama-list-item front-cover="[[getBookCover(item)]]" back-cover="[[getBookCover(item)]]" route-path="[[getBookRoutePath(item)]]"></comicorama-list-item>
+        </template>
+      </comicorama-list>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-books-page',
+      behaviors: [
+        ComicoramaPageBehavior,
+        ComicoramaCommonBehavior
+      ],
+      observers: [
+        '_onSeriesResultChanged(seriesResult)'
+      ],
+      _onSeriesResultChanged: function (seriesResult) {
+        var title = !seriesResult || !seriesResult.series || !seriesResult.series[0] || !seriesResult.series[0].title ? null : seriesResult.series[0].title;
+        if (this.title !== title) {
+          this.set('title', title);
+        }
+      },
+      getSeriesParams: function (routeData) {
+        this.set('seriesResult', null);
+        if (!routeData || !routeData.idseries) {
+          return null;
+        }
+        return {
+          idseries: routeData.idseries
+        };
+      },
+      getBooksParams: function (routeData) {
+        this.set('booksResult', null);
+        if (!routeData || !routeData.idseries) {
+          return null;
+        }
+        return {
+          idseries: routeData.idseries
+        };
+      }
+    });
+  </script>
+</dom-module>

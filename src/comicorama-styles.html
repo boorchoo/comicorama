@@ -1,0 +1,47 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Roboto+Condensed:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en'>
+
+<dom-module id="comicorama-styles">
+  <template>
+    <style>
+      :root {
+        --comicorama-font-title: {
+          font-family: 'Roboto Condensed', sans-serif;
+          font-weight: 400;
+          text-transform: uppercase;
+        };
+
+        --comicorama-font-title1: {
+          @apply(--comicorama-font-title);
+          font-size: 2.827rem;
+        };
+        
+        --comicorama-font-title2: {
+          @apply(--comicorama-font-title);
+          font-size: 4rem;
+        };
+      }
+
+      .comicorama-book-section-title {
+        @apply(--comicorama-font-title1);
+        margin-bottom: 2rem;
+      }
+
+      .comicorama-book-section-close {
+        --iron-icon-height: 2.827rem;
+        --iron-icon-width: 2.827rem;
+        float: right;
+        margin-right: 16px;
+        margin-bottom: 6px;
+        color: #b3b3b3;
+        cursor: pointer;
+        transition: color 0.5s;
+      }
+
+      .comicorama-book-section-close:hover {
+        color: #000000;
+      }
+    </style>
+  </template>
+</dom-module>

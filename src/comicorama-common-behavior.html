@@ -1,0 +1,40 @@
+<script>
+  ComicoramaCommonBehaviorImpl = {
+    getImage: function (uri) {
+      return typeof uri !== 'string' ? null : (uri.substr(0, 5) === 'data:' ? uri : 'http://comicorama.local/' + uri);
+    },
+    getSeriesFrontCover: function (series) {
+      return !series || !series.picture || !series.picture[1] ? this.getSeriesBackCover(series) : this.getImage(series.picture[1]);
+    },
+    getSeriesBackCover: function (series) {
+      return !series || !series.picture || !series.picture[0] ? null : this.getImage(series.picture[0]);
+    },
+    getSeriesRoutePath: function (series) {
+      return !series || !series.idseries ? null : '/books/' + series.idseries;
+    },
+    getBookTitle: function (book) {
+      if (!book) {
+        return null;
+      }
+      var title = null;
+      if (book.series && book.series[0] && book.series[0].title) {
+        title = book.series[0].title;
+        if (book.series[0].number) {
+          title = (!title ? '' : title + ' ') + book.series[0].number;    
+        }
+      }
+      if (book.title) {
+        title = (!title ? '' : title + ': ') + book.title;
+      }
+      return title;
+    },
+    getBookCover: function (book) {
+      return !book || !book.cover ? null : this.getImage(book.cover);
+    },
+    getBookRoutePath: function (book) {
+      return !book || !book.idbook ? null : '/book/' + book.idbook;
+    }
+  };
+
+  ComicoramaCommonBehavior = [ ComicoramaCommonBehaviorImpl ];
+</script>

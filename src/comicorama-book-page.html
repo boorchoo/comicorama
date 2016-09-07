@@ -1,0 +1,114 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+<link rel="import" href="comicorama-page-selector-behavior.html">
+<link rel="import" href="comicorama-common-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<link rel="import" href="comicorama-service-call.html">
+<link rel="import" href="comicorama-book-menu-page.html">
+<link rel="import" href="comicorama-book-credits-page.html">
+<link rel="import" href="comicorama-book-contents-page.html">
+<link rel="import" href="comicorama-book-related-page.html">
+
+<dom-module id="comicorama-book-page">
+  <template>
+    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+      }
+
+      #coverContainer {
+        position: relative;
+        margin: 16px;
+      }
+
+      #coverContainer iron-image {
+        background-color: #ffffff;
+      }
+    </style>
+
+    <app-route route="{{route}}" pattern="/:idbook" data="{{routeData}}"></app-route>
+
+    <comicorama-service-call method="GetBook" params="[[getBookParams(routeData)]]" result="{{bookResult}}"></comicorama-service-call>
+
+    <div id="coverContainer" class="flex">
+      <iron-image id="cover" class="fit" src="[[getImage(bookResult.cover)]]" sizing="contain" preload fade></iron-image>
+    </div>
+    <neon-animated-pages id="pages"
+      class="flex"
+      attr-for-selected="id"
+      selected="{{selectedPage}}"
+      fallback-selection="menu"
+      on-iron-select="_onIronSelect"
+      on-iron-deselect="_onIronDeselect"
+      on-neon-animation-finish="_onNeonAnimationFinish">
+      <comicorama-book-menu-page id="menu" data="{{bookResult}}"></comicorama-book-menu-page>
+      <comicorama-book-credits-page id="credits" hidden="[[!bookResult.author]]" data="{{bookResult}}"></comicorama-book-credits-page>
+      <comicorama-book-contents-page id="contents" hidden="[[!bookResult.book]]" data="{{bookResult}}"></comicorama-book-contents-page>
+      <comicorama-book-related-page id="related" hidden="[[!bookResult.related_book]]" data="{{bookResult}}"></comicorama-book-related-page>
+    </neon-animated-pages>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-book-page',
+      behaviors: [
+        ComicoramaPageBehavior,
+        ComicoramaPageSelectorBehavior,
+        ComicoramaCommonBehavior
+      ],
+      listeners: {
+        'comicorama-change-route': '_onChangeRoute'
+      },
+      observers: [
+        '_onBookResultChanged(bookResult)',
+        '_onSelectedPageChanged(selectedPage)'
+      ],
+      _onChangeRoute: function (e) {
+        if (e.detail.path.substr(0, 1) === '#') {
+          this.selectedPage = e.detail.path.substr(1);
+          if (this.selectedPage === 'menu') {
+            this.menuSelected = null;
+          }
+          e.stopPropagation();
+        }
+      },
+      onExitFinish: function () {
+        this.selectedPage = 'menu';
+      },
+      _onBookResultChanged: function (bookResult) {
+        var title = !bookResult ? null : this.getBookTitle(bookResult);
+        if (this.title !== title) {
+          this.set('title', title);
+        }
+      },
+      _onSelectedPageChanged: function (selectedPage) {
+        this.scrollTarget = this.$[selectedPage];
+      },
+      getBookParams: function (routeData) {
+        if (this.offscreen) {
+          this.set('bookResult', null);
+          this.$.cover.placeholder = null;
+        } else {
+          this.$.cover.placeholder = this.$.cover.src;
+          this.$.cover.src = null;
+        }
+        if (!routeData || !routeData.idbook) {
+          return null;
+        }
+        return {
+          idbook: routeData.idbook
+        };
+      }
+    });
+  </script>
+</dom-module>

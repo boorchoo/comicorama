@@ -1,0 +1,50 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-menu-behavior/iron-menu-behavior.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="comicorama-menu">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+      }
+
+      .content {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+    </style>
+    <div class="content">
+        <content></content>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-menu',
+      behaviors: [
+        Polymer.IronMenuBehavior
+      ],
+      listeners: {
+        'iron-select': '_onIronSelect',
+        'iron-deselect': '_onIronDeselect',
+        'comicorama-menu-item-deselected': '_onItemDeselected'
+      },
+      ready: function () {
+        this.activateEvent = 'comicorama-menu-item-selected';
+      },
+      _onIronSelect: function (e) {
+        e.stopPropagation();
+      },
+      _onIronDeselect: function (e) {
+        e.detail.item.fire('comicorama-menu-item-deselected');
+        e.stopPropagation();
+      },
+      _onItemDeselected: function (e) {
+        if (e.target === this.selectedItem) {
+          this.select(null);
+        }
+      }
+    });
+  </script>
+</dom-module>

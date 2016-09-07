@@ -1,0 +1,72 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<dom-module id="comicorama-book-credits-page">
+  <template>
+    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        @apply(--layout-fit);
+        overflow: auto;
+      }
+
+      ul {
+        @apply(--comicorama-font-title);
+        font-size: 1.777rem;
+        list-style: none;
+      }
+
+      .credit {
+        color: #b3b3b3;
+      }
+    </style>
+
+    <div class="comicorama-book-section-title">Credits<iron-icon class="comicorama-book-section-close" icon="icons:close" on-tap="close"></iron-icon></div>
+    <ul>
+      <template is="dom-repeat" items="[[data.author]]">
+        <li><span class="credit">[[item.credit]]&nbsp;</span><span>[[item.author_name]]</span></li>
+      </template>
+    </ul>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-book-credits-page',
+      properties: {
+        animationConfig: {
+          value: function() {
+            return {
+              'entry': {
+                name: 'slide-from-right-animation',
+                node: this,
+                timing: {
+                  duration: 1000
+                }
+              },
+              'exit': {
+                name: 'fade-out-animation',
+                node: this,
+                timing: {
+                  duration: 1000
+                }
+              }
+            };
+          }
+        }
+      },
+      behaviors: [
+        ComicoramaPageBehavior
+      ],
+      close: function() {
+        this.fire('comicorama-change-route', {
+          path: '#menu'
+        });
+      }
+    });
+  </script>
+</dom-module>

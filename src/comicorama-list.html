@@ -1,0 +1,97 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selectable.html">
+<link rel="import" href="../../bower_components/iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="comicorama-list">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        padding: 0;
+        text-align: center;
+        font-size: 0;
+        background: #ffffff; /* NOTE: This fixes Firefox rendering issue */ 
+      }
+    </style>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-list',
+      properties: {
+        disabled: {
+          type: Boolean,
+          notify: true,
+          observer: '_disabledChanged',
+          value: true
+        }
+      },
+      behaviors: [
+        Polymer.IronSelectableBehavior,
+        Polymer.IronResizableBehavior
+      ],
+      listeners: {
+        'iron-items-changed': '_onIronItemsChanged',
+        'iron-resize': 'breakLines'
+      },
+      ready: function () {
+        this.selectable = 'comicorama-list-item';
+        this.activateEvent = null;
+      },
+      attached: function() {
+        this.async(this.notifyResize, 1);
+      },
+      _disabledChanged: function (newValue, oldValue) {
+        if (newValue) {
+          this.disableItems();
+        } else {
+          //NOTE: It's important that we do this async
+          this.async(function () {
+            this.breakLines();
+            this.enableItems();
+          }, 1);
+        }
+      },
+      _onIronItemsChanged: function () {
+        this.disableItems();
+        this.async(function () {
+          this.breakLines();
+          if (!this.disabled) {
+            this.enableItems();
+          }
+        }, 1);
+      },
+      disableItems: function () {
+        for (var index in this.items) {
+          this.items[index].setDisabled(true);
+        }
+      },
+      breakLines: function () {
+        var maxLineWidth = this.clientWidth; //NOTE: clientWidth includes padding
+        var line = 0;
+        var lineWidth = 0;
+        for (var index in this.items) {
+          var itemWidthString = this.items[index].getComputedStyleValue('--comicorama-list-item-width');
+          var itemMarginString = this.items[index].getComputedStyleValue('--comicorama-list-item-margin');
+          var itemWidth = parseInt(itemWidthString.substr(0, itemWidthString.length - 2)) + 2 * parseInt(itemMarginString.substr(0, itemMarginString.length - 2));
+          if (lineWidth + itemWidth > maxLineWidth) {
+            this.items[index].set('lineBreak', true);
+            line++;
+            lineWidth = line % 2 === 0 ?  0 : itemWidth;
+          } else {
+            this.items[index].set('lineBreak', false);
+          }
+          lineWidth += itemWidth;
+        }
+      },
+      enableItems: function () {
+        var maxWait = !this.items || !this.items.length ? 0 : (this.items.length < 50 ? this.items.length * 100 : 5000);
+        for (var index in this.items) {
+          this.items[index].setDisabled(false, maxWait === 0 ? 0 : Math.floor((Math.random() * maxWait) + 1));
+        }
+      }
+    });
+  </script>
+</dom-module>

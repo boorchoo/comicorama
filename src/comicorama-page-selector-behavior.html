@@ -1,0 +1,56 @@
+<script>
+  ComicoramaPageSelectorBehaviorImpl = {
+      properties: {
+          pages: {
+              type: Object,
+              notify: true,
+              observer: '_onPagesChanged',
+              value: function () {
+                return this.$.pages;
+              }
+          }
+      },
+      _onPagesChanged: function (newValue, oldValue) {
+          if (oldValue) {
+              this.unlisten(oldValue, 'iron-select', '_onIronSelect');
+              this.unlisten(oldValue, 'iron-deselect', '_onIronDeselect');
+              this.unlisten(oldValue, 'neon-animation-finish', '_onNeonAnimationFinish');
+          }
+          if (newValue) {
+              this.listen(newValue, 'iron-select', '_onIronSelect');
+              this.listen(newValue, 'iron-deselect', '_onIronDeselect');
+              this.listen(newValue, 'neon-animation-finish', '_onNeonAnimationFinish');
+          }
+      },
+      _onIronSelect: function (e) {
+        this._entryPage = e.detail.item ? e.detail.item : null;
+        if (this._entryPage) {
+          this._entryPage.fire('comicorama-page-entry-start');
+        }
+        e.stopPropagation();
+      },
+      _onIronDeselect: function (e) {
+        if (this._exitPage) {
+          this._exitPage.fire('comicorama-page-exit-finish');
+        }
+        this._exitPage = e.detail.item ? e.detail.item : null;
+        if (this._exitPage) {
+          this._exitPage.fire('comicorama-page-exit-start');
+        }
+        e.stopPropagation();
+      },
+      _onNeonAnimationFinish: function (e) {
+        if (this._entryPage) {
+          this._entryPage.fire('comicorama-page-entry-finish');
+          this._entryPage = null;
+        }
+        if (this._exitPage) {
+          this._exitPage.fire('comicorama-page-exit-finish');
+          this._exitPage = null;
+        }
+        e.stopPropagation();
+      }
+  };
+
+  ComicoramaPageSelectorBehavior = [ ComicoramaPageSelectorBehaviorImpl ];
+</script>

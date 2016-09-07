@@ -1,0 +1,52 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+
+<dom-module id="comicorama-service-call">
+  <template>
+    <iron-ajax
+      auto="{{params}}"
+      url="http://comicorama.local/ComicoramaService.php"
+      method="POST"
+      content-type="application/json"
+      body="[[getRequest(method, params)]]"
+      handle-as="json"
+      last-response="{{response}}"></iron-ajax>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-service-call',
+      properties: {
+        method: {
+          type: String,
+          notify: true,
+          value: null
+        },
+        params: {
+          type: Object,
+          notify: true,
+          value: null 
+        },
+        result: {
+          type: Object,
+          notify: true,
+          value: null
+        }
+      },
+      observers: [
+        '_onResponseChanged(response)'
+      ],
+      getRequest: function (method, params) {
+        return {
+          jsonrpc: '2.0',
+          method: method,
+          params: typeof params !== 'object' ? {} : params,
+          id: 1
+        };
+      },
+      _onResponseChanged: function (response) {
+        this.result = !response || !response.result ? null : response.result;
+      }
+    });
+  </script>
+</dom-module>

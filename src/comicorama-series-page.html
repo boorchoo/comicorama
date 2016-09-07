@@ -1,0 +1,48 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+<link rel="import" href="comicorama-common-behavior.html">
+
+<link rel="import" href="comicorama-service-call.html">
+<link rel="import" href="comicorama-list.html">
+<link rel="import" href="comicorama-list-item.html">
+
+<dom-module id="comicorama-series-page">
+  <template>
+    <style include="iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        @apply(--layout-fit);
+        padding: 64px;
+        overflow: auto;
+
+        --comicorama-list-item-width: 256px;
+        --comicorama-list-item-height: 128px;
+        --comicorama-list-item-margin: 4px;
+      }
+    </style>
+
+    <comicorama-service-call method="GetSeries" params="{{seriesParams}}" result="{{seriesResult}}"></comicorama-service-call>
+
+    <comicorama-list disabled="{{offscreen}}">
+      <template is="dom-repeat" items="[[seriesResult.series]]">
+        <comicorama-list-item front-cover="[[getSeriesFrontCover(item)]]" back-cover="[[getSeriesBackCover(item)]]" route-path="[[getSeriesRoutePath(item)]]"></comicorama-list-item>
+      </template>
+    </comicorama-list>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-series-page',
+      behaviors: [
+        ComicoramaPageBehavior,
+        ComicoramaCommonBehavior
+      ],
+      ready: function () {
+        this.title = 'Series';
+        this.seriesParams = {};
+      }
+    });
+  </script>
+</dom-module>

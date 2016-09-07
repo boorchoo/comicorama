@@ -1,0 +1,154 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="comicorama-list-item">
+  <template>
+    <style>
+      :host {
+        display: inline;
+      }
+
+      :host.line-break:before {
+        content: "\A";
+        white-space: pre;
+      }
+
+      #container {
+        display: inline-block;
+        position: relative;
+        width: var(--comicorama-list-item-width);
+        height: var(--comicorama-list-item-height);
+        margin: var(--comicorama-list-item-margin);
+        cursor: pointer;
+      }
+
+      #container.disabled {
+        cursor: default;
+      }
+
+      #front {
+	      display: block;
+	      position: absolute;
+	      left: 0;
+	      top: 0;
+	      right: 0;
+	      bottom: 0;
+	      backface-visibility: hidden;
+	      background-size: cover;
+	      background-position: center;
+	      transform: rotateY(-180deg);
+	      transition: transform 0.5s;
+      }
+
+      #back {
+	      display: block;
+	      position: absolute;
+	      left: 0;
+	      top: 0;
+	      right: 0;
+	      bottom: 0;
+	      backface-visibility: hidden;
+	      background-size: cover;
+	      background-position: center;
+	      transform: rotateY(0deg);
+	      transition: transform 0.5s;
+      }
+
+      .active #front {
+	      transform: rotateY(0deg);
+      }
+
+      .active #back {
+	      transform: rotateY(180deg);
+      }
+
+      .disabled #front {
+	      transform: rotateY(-90deg);
+      }
+
+      .disabled #back {
+	      transform: rotateY(90deg);
+      }
+    </style>
+
+    <div id="container" on-mouseover="_onMouseOver" on-mouseout="_onMouseOut" on-tap="_onTap">
+      <div id="front"></div>
+      <div id="back"></div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-list-item',
+      properties: {
+        disabled: {
+          type: Boolean,
+          notify: true,
+          observer: '_disabledChanged',
+          value: true
+        },
+        lineBreak: {
+          type: Boolean,
+          notify: true,
+          observer: '_lineBreakChanged',
+          value: false
+        },
+        frontCover: {
+          type: String,
+          notify: true,
+          observer: '_frontCoverChanged',
+          value: null
+        },
+        backCover: {
+          type: String,
+          notify: true,
+          observer: '_backCoverChanged',
+          value: null
+        },
+        routePath: {
+          type: String
+        }
+      },
+      _disabledChanged: function(newValue, oldValue) {
+        this.toggleClass('disabled', newValue, this.$.container);
+      },
+      _lineBreakChanged: function(newValue, oldValue) {
+        this.toggleClass('line-break', newValue);
+      },
+      _frontCoverChanged: function(newValue, oldValue) {
+        this.$.front.style['background-image'] = !newValue ? 'none' : "url('" + newValue + "')";
+      },
+      _backCoverChanged: function(newValue, oldValue) {
+        this.$.back.style['background-image'] = !newValue ? 'none' : "url('" + newValue + "')";
+      },
+      _onMouseOver: function () {
+        this.toggleClass('active', true, this.$.container);
+      },
+      _onMouseOut: function () {
+        this.toggleClass('active', false, this.$.container);
+      },
+      _onTap: function () {
+        if (this.disabled) {
+          return;
+        }
+        if (this.routePath) {
+          this.fire('comicorama-change-route', {
+            path: this.routePath
+          });
+        }
+      },
+      setDisabled: function (disabled, wait) {
+        if (this._setDisabledAsyncHandle) {
+          this.cancelAsync(this._setDisabledAsyncHandle);
+          this._setDisabledAsyncHandle = null;
+        }
+        if (!wait) {
+          this.disabled = disabled;
+        } else {
+          this._setDisabledAsyncHandle = this.async(function () {
+            this.disabled = false;
+          }, wait); 
+        }
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,150 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-behaviors/iron-button-state.html">
+<link rel="import" href="../../bower_components/neon-animation/neon-animation-runner-behavior.html">
+
+<link rel="import" href="comicorama-keyframes-animation.html">
+
+<dom-module id="comicorama-menu-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      :host:focus {
+        outline: none;
+      }
+
+      #container {
+        width: 100%;
+        text-align: right;
+      }
+
+      #container.animated.active {
+        width: 0%;
+      }
+
+      #container.active .title {
+        @apply(--comicorama-menu-item-title-active);
+      }
+
+      .title {
+        cursor: pointer;
+        @apply(--comicorama-menu-item-title);
+      }
+
+      .title:hover {
+        @apply(--comicorama-menu-item-title-active);
+      }
+    </style>
+    <div id="container" class="animated"><span class="title">[[title]]</span></div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-menu-item',
+      properties: {
+        title: {
+          type: String,
+          notify: true,
+          value: ''
+        },
+        notAnimated: {
+          type: Boolean,
+          notify: true,
+          observer: '_notAnimatedChanged',
+          value: false
+        },
+        routePath: {
+          type: String,
+          notify: true,
+          value: null
+        },
+        animationConfig: {
+          value: function() {
+            return {
+              'selected': {
+                name: 'comicorama-keyframes-animation',
+                node: this.$.container,
+                keyframes: [
+                  {offset: 0.0, 'width': '100%'},
+                  {offset: 1.0, 'width': '0%'}
+                ],
+                timing: {
+                  duration: 1000
+                }
+              },
+              'deselected': {
+                name: 'comicorama-keyframes-animation',
+                node: this.$.container,
+                keyframes: [
+                  {offset: 0.0, 'width': '0%'},
+                  {offset: 1.0, 'width': '100%'}
+                ],
+                timing: {
+                  duration: 1000
+                }
+              }
+            };
+          }
+        }
+      },
+      behaviors: [
+        Polymer.IronButtonState,
+        Polymer.IronControlState,
+        Polymer.NeonAnimationRunnerBehavior
+      ],
+      listeners: {
+        'comicorama-menu-item-deselected': '_deselected',
+        'neon-animation-finish': '_onNeonAnimationFinish'
+      },
+      ready: function () {
+        this.toggles = true;
+      },
+      _notAnimatedChanged: function (newValue, oldValue) {
+        if (newValue) {
+          this.cancelAnimation();
+          this._changeRouteIfActive();
+        }
+        this.toggleClass('animated', !newValue, this.$.container);
+      },
+      _activeChanged: function (newValue, oldValue) {
+        if (newValue) {
+          this.fire('comicorama-menu-item-selected');
+          this._selected();
+        } else {
+          this.fire('comicorama-menu-item-deselected');
+          this._deselected();
+        }
+      },
+      _selected: function () {
+        this.active = true;
+        this.toggleClass('active', true, this.$.container);
+        if (!this.notAnimated) {
+          this.cancelAnimation();
+          this.playAnimation('selected');
+        }
+        this._changeRouteIfActive();
+      },
+      _deselected: function () {
+        this.active = false;
+        this.toggleClass('active', false, this.$.container);
+        if (!this.notAnimated) {
+          this.cancelAnimation();
+          this.playAnimation('deselected');
+        }
+      },
+      _onNeonAnimationFinish: function (e) {
+        this._changeRouteIfActive();
+        e.stopPropagation();
+      },
+      _changeRouteIfActive: function () {
+        if (this.active && this.routePath) {
+          this.fire('comicorama-change-route', {
+            path: this.routePath
+          });
+        }
+      }
+    });
+  </script>
+</dom-module>
