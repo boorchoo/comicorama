@@ -1,14 +1,27 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Roboto+Condensed:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en'>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=latin-ext" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700&subset=latin-ext" rel="stylesheet">
 
 <dom-module id="comicorama-styles">
   <template>
     <style>
       :root {
+
+        --comicorama-logo-width: 96px;
+        --comicorama-horizontal-padding: 16px;
+        --comicorama-main-title-horizontal-padding: 112px;
+
+        --comicorama-background-color: #ffffff;
+        --comicorama-base-color: #000000;
+        --comicorama-secondary-color: #b3b3b3;
+        --comicorama-accent-color: #ff3737;
+
+        --comicorama-border: dotted 1px var(--comicorama-secondary-color);
+
         --comicorama-font: {
           font-family: 'Roboto', sans-serif;
-          font-weight: 200;
+          font-weight: 300;
         };
 
         --comicorama-font-title: {
@@ -39,13 +52,13 @@
         float: right;
         margin-right: 16px;
         margin-bottom: 6px;
-        color: #b3b3b3;
+        color: var(--comicorama-secondary-color);
         cursor: pointer;
         transition: color 0.5s;
       }
 
       .comicorama-book-section-close:hover {
-        color: #000000;
+        color: var(--comicorama-base-color);
       }
     </style>
   </template>

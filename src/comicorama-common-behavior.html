@@ -9,10 +9,10 @@
     getSeriesBackCover: function (series) {
       return !series || !series.picture || !series.picture[0] ? null : this.getImage(series.picture[0]);
     },
-    getSeriesRoutePath: function (series) {
+    getSeriesBooksRoutePath: function (series) {
       return !series || !series.idseries ? null : '/books/series/' + series.idseries;
     },
-    getAuthorRoutePath: function (author) {
+    getAuthorBooksRoutePath: function (author) {
       return !author || !author.idauthor ? null : '/books/author/' + author.idauthor;
     },
     getBookTitle: function (book) {

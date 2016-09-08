@@ -36,13 +36,14 @@
       }
 
       app-header app-toolbar img.logo {
-        height: 5rem;
+        width: var(--comicorama-logo-width);
         padding-top: 8px;
       }
 
-      app-header app-toolbar div {
-        padding-left: 16px;
+      app-header app-toolbar div.main-title {
+        padding-left: var(--comicorama-horizontal-padding);
         overflow: hidden;
+
         @apply(--comicorama-font-title1);
       }
 
@@ -62,7 +63,7 @@
       <app-header fixed shadow="{{page.scrolled}}">
         <app-toolbar>
           <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
-          <div main-title>{{mainTitle}}</div>
+          <div main-title class="main-title">{{mainTitle}}</div>
         </app-toolbar>
       </app-header>
       <neon-animated-pages id="pages"

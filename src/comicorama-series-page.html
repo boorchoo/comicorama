@@ -27,7 +27,7 @@
 
     <comicorama-list disabled="{{offscreen}}">
       <template is="dom-repeat" items="[[seriesResult.series]]" as="series" sort="sortSeriesByTitle">
-        <comicorama-list-item front-cover="[[getSeriesFrontCover(series)]]" back-cover="[[getSeriesBackCover(series)]]" route-path="[[getSeriesRoutePath(series)]]"></comicorama-list-item>
+        <comicorama-list-item front-cover="[[getSeriesFrontCover(series)]]" back-cover="[[getSeriesBackCover(series)]]" route-path="[[getSeriesBooksRoutePath(series)]]"></comicorama-list-item>
       </template>
     </comicorama-list>
   </template>
