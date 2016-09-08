@@ -17,13 +17,6 @@
         overflow: auto;
       }
 
-      .title {
-        padding-left: var(--comicorama-main-title-horizontal-padding);
-        margin-bottom: 16px;
-        @apply(--comicorama-font);
-        font-size: 1.4rem;
-      }
-
       .alphabet {
         @apply(--layout-horizontal);
         @apply(--layout-justified);
@@ -47,7 +40,6 @@
 
       .container {
         @apply(--layout-horizontal);
-        border-top: var(--comicorama-border);
         margin-left: var(--comicorama-main-title-horizontal-padding);
         margin-right: var(--comicorama-main-title-horizontal-padding);
         margin-bottom: 16px;
@@ -57,7 +49,7 @@
         @apply(--comicorama-font);
         font-size: 2rem;
         font-weight: 400;
-        padding-top: 14px;
+        padding-top: 8px;
         width: var(--comicorama-logo-width);
         text-align: left;
       }
@@ -88,6 +80,7 @@
 
       .author {
         width: 25%;
+        height: 48px;
       }
 
       .author a {
@@ -106,7 +99,6 @@
 
     <comicorama-service-call method="GetAuthors" params="{{authorsParams}}" result="{{authorsResult}}"></comicorama-service-call>
 
-    <div class="title">Browse Alphabetically</div>
     <div class="alphabet">
       <template is="dom-repeat" id="alphabet" items="[[alphabet]]" as="letter">
         <span on-tap="scrollToLetter">[[letter]]</span>
