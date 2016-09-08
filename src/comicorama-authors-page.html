@@ -1,5 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="comicorama-page-behavior.html">
@@ -63,22 +63,20 @@
       }
 
       .top {
-        position: relative;
+        position: fixed;
+        right: 48px;
+        bottom: 32px;
       }
 
-      .top iron-icon {
-        position: absolute;
-        top: -16px;
-        color: var(--comicorama-secondary-color);
-        cursor: pointer;
-        transition: color 0.25s;
+      paper-fab {
+        -webkit-box-shadow: 0px 0px 0px 1px var(--comicorama-secondary-color);
+        -moz-box-shadow: 0px 0px 0px 1px var(--comicorama-secondary-color);
+        box-shadow: 0px 0px 0px 1px var(--comicorama-secondary-color);
 
-        --iron-icon-height: 32px;
-        --iron-icon-width: 32px;
-      }
-
-      .top iron-icon:hover {
-        color: var(--comicorama-base-color);
+        --paper-fab-background: var(--comicorama-background-color);
+        --paper-fab-iron-icon: {
+          color: var(--comicorama-base-color);
+        };
       }
 
       .authors-container {
@@ -122,11 +120,9 @@
             <div class="author"><a href="[[getAuthorBooksRoutePath(author)]]">[[author.name]]</a></div>
           </template>
         </div>
-        <div class="top">
-          <iron-icon icon="icons:expand-less" on-tap="scrollToTop"></iron-icon>
-        </div>
       </div>
     </template>
+    <paper-fab class="top" icon="arrow-upward" noink title="Go to top" on-tap="scrollToTop" hidden="[[!scrolled]]"></paper-fab>
   </template>
 
   <script>
