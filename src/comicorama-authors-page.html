@@ -61,10 +61,6 @@
       }
 
       paper-fab {
-        -webkit-box-shadow: 0px 0px 0px 1px var(--comicorama-secondary-color);
-        -moz-box-shadow: 0px 0px 0px 1px var(--comicorama-secondary-color);
-        box-shadow: 0px 0px 0px 1px var(--comicorama-secondary-color);
-
         --paper-fab-background: var(--comicorama-background-color);
         --paper-fab-iron-icon: {
           color: var(--comicorama-base-color);
@@ -114,7 +110,7 @@
         </div>
       </div>
     </template>
-    <paper-fab class="top" icon="arrow-upward" noink title="Go to top" on-tap="scrollToTop" hidden="[[!scrolled]]"></paper-fab>
+    <paper-fab class="top" icon="arrow-upward" title="Go to top" on-tap="scrollToTop" hidden="[[!scrolled]]"></paper-fab>
   </template>
 
   <script>
