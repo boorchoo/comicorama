@@ -9,8 +9,12 @@
       :root {
 
         --comicorama-logo-width: 96px;
+        --comicorama-logo-width-small-screen: 64px;
+
         --comicorama-horizontal-padding: 16px;
         --comicorama-main-title-horizontal-padding: 112px;
+
+        --comicorama-page-padding: 64px;
 
         --comicorama-background-color: #ffffff;
         --comicorama-base-color: #000000;
@@ -30,14 +34,20 @@
           text-transform: uppercase;
         };
 
+        --comicorama-font-size-title1: 2.827rem;
+        --comicorama-font-size-title2: 4rem;
+
+        --comicorama-font-size-title1-small-screen: 2rem;
+        --comicorama-font-size-title2-small-screen: 3rem;
+
         --comicorama-font-title1: {
           @apply(--comicorama-font-title);
-          font-size: 2.827rem;
+          font-size: var(--comicorama-font-size-title1); 
         };
         
         --comicorama-font-title2: {
           @apply(--comicorama-font-title);
-          font-size: 4rem;
+          font-size: var(--comicorama-font-size-title2);
         };
       }
 

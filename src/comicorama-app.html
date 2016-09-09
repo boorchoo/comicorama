@@ -64,6 +64,16 @@
       #exlibris {
         @apply(--layout-self-center);
       }
+
+      @media only screen and (orientation: portrait) {
+        app-header app-toolbar img.logo {
+          width: var(--comicorama-logo-width-small-screen);
+        }
+
+        app-header app-toolbar div.main-title {
+          font-size: var(--comicorama-font-size-title1-small-screen);
+        }
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
