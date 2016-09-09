@@ -28,9 +28,13 @@
         @apply(--layout-center-justified);
       }
 
-      #exlibris {
+      #exlibrisContainer a {
         width: 75%;
         @apply(--layout-self-center);
+      }
+
+      #exlibris {
+        width: 100%;
       }
 
       .menu-page {
@@ -57,7 +61,7 @@
     </style>
     
     <div id="exlibrisContainer">
-      <img id="exlibris" src="/img/comicorama-exlibris.svg" />
+      <a href="/about"><img id="exlibris" src="/img/comicorama-exlibris.svg"></a>
     </div>
     <neon-animated-pages class="flex"
       attr-for-selected="id"

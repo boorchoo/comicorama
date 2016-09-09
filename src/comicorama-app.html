@@ -14,6 +14,7 @@
 <link rel="import" href="comicorama-styles.html">
 
 <link rel="import" href="comicorama-home-page.html">
+<link rel="import" href="comicorama-about-page.html">
 <link rel="import" href="comicorama-series-page.html">
 <link rel="import" href="comicorama-authors-page.html">
 <link rel="import" href="comicorama-books-page.html">
@@ -86,6 +87,7 @@
         selected-item="{{page}}"
         fallback-selection="home">
         <comicorama-home-page id="home"></comicorama-home-page>
+        <comicorama-about-page id="about"></comicorama-about-page>
         <comicorama-series-page id="series"></comicorama-series-page>
         <comicorama-authors-page id="authors"></comicorama-authors-page>
         <comicorama-books-page id="books" route="{{booksRoute}}"></comicorama-books-page>
@@ -151,9 +153,6 @@
             this.intro = false;
           }, 1000);
         }, 5000);
-      },
-      onExlibrisready: function () {
-        alert('ready');
       }
     });
   </script>

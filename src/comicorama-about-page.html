@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<dom-module id="comicorama-about-page">
+  <template>
+    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+      :host {
+        display: block;
+        @apply(--layout-fit);
+        overflow: auto;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-about-page',
+      behaviors: [
+        ComicoramaPageBehavior
+      ],
+      ready: function () {
+         this.title = 'About Comicorama';
+      }
+    });
+  </script>
+</dom-module>
