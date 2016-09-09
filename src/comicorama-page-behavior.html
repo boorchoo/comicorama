@@ -94,6 +94,17 @@
     },
     _scrollHandler: function () {
       this.scrolled = this._scrollTop !== 0;
+    },
+    animatedScroll: function (endScrollTop) {
+      var startScrollTop = this._scrollTop;
+      var maxDuration = 250;
+      var duration = Math.round(Math.abs(endScrollTop - startScrollTop) / this.scrollTarget.scrollHeight * maxDuration);
+      
+      var scrollEffect = new KeyframeEffect(this, [], duration);
+      scrollEffect.onsample = function (timeFraction, effect) {
+        effect.target._scrollTop = endScrollTop + (typeof timeFraction === 'number' ? (startScrollTop - endScrollTop) * (1 - timeFraction) : 0);
+      };
+      this._animatedScrollAnimation = document.timeline.play(scrollEffect);
     }
   };
 
