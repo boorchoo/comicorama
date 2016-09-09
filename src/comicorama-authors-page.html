@@ -38,6 +38,11 @@
         color: var(--comicorama-accent-color);
       }
 
+      .alphabet span[data-empty] {
+        color: var(--comicorama-secondary-color);
+        cursor: default;
+      }
+
       .container {
         @apply(--layout-horizontal);
         margin-left: var(--comicorama-main-title-horizontal-padding);
@@ -101,15 +106,15 @@
     <comicorama-service-call method="GetAuthors" params="{{authorsParams}}" result="{{authorsResult}}"></comicorama-service-call>
 
     <div class="alphabet">
-      <template is="dom-repeat" id="alphabet" items="[[alphabet]]" as="letter">
-        <span on-tap="scrollToLetter">[[letter]]</span>
+      <template is="dom-repeat" id="alphabet" items="[[authorsByLetter]]">
+        <span on-tap="scrollToLetter" data-empty$="[[!item.authors.length]]">[[item.letter]]</span>
       </template>
     </div>
-    <template is="dom-repeat" items="[[alphabet]]" as="letter">
-      <div id="[[letter]]" class="container">
-        <div class="letter">[[letter]]</div>
+    <template is="dom-repeat" items="[[authorsByLetter]]">
+      <div id="[[item.letter]]" class="container" hidden="[[!item.authors.length]]">
+        <div class="letter">[[item.letter]]</div>
         <div class="authors-container">
-          <template is="dom-repeat" items="[[getAuthorsByLetter(authorsResult, letter)]]" as="author" sort="sortAuthorsByName">
+          <template is="dom-repeat" items="[[item.authors]]" as="author" sort="sortAuthorsByName">
             <div class="author"><a href="[[getAuthorBooksRoutePath(author)]]">[[author.name]]</a></div>
           </template>
         </div>
@@ -128,24 +133,35 @@
         ComicoramaCommonBehavior
       ],
       observers: [
-        '_onScrolledChanged(scrolled)'
+        '_onScrolledChanged(scrolled)',
+        '_onAuthorsResultChanged(authorsResult)'
       ],
       ready: function () {
         this.title = 'Authors';
         this.authorsParams = {};
-        this.alphabet = 'abcdefghijklmnopqrstuvwxyz'.toUpperCase().split('');
+        this.set('authorsByLetter', []);
+        var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        for (var i in letters) {
+          var letter = letters[i];
+          this.push('authorsByLetter', {
+            letter: letter,
+            authors: []
+          });
+        }
       },
-      getAuthorsByLetter: function (authorsResult, letter) {
-        if (!authorsResult || !authorsResult.author || !letter) {
-          return null;
-        } 
-        var authors = [];
-        for (var i in authorsResult.author) {
-          if (authorsResult.author[i].name.substr(0, 1) === letter) {
-            authors.push(authorsResult.author[i]);
+      _onAuthorsResultChanged: function (authorsResult) {
+        for (var i in this.authorsByLetter) {
+          this.set('authorsByLetter.' + i + '.authors', []);
+          if (!authorsResult || !authorsResult.author) {
+            continue;
+          }
+          for (var j in authorsResult.author) {
+            var author = authorsResult.author[j]; 
+            if (author.name.toUpperCase().substr(0, 1) === this.authorsByLetter[i].letter) {
+              this.push('authorsByLetter.' + i + '.authors', author);
+            }
           }
         }
-        return authors;
       },
       sortAuthorsByName: function (a, b) {
         var nameA = a.name.toUpperCase();
@@ -163,7 +179,15 @@
         this.toggleClass('active', false, this.$.top);
       },
       scrollToLetter: function (e) {
-        this.animatedScroll(this.$$('#' + this.$.alphabet.itemForElement(e.target)).offsetTop);
+        var item = this.$.alphabet.itemForElement(e.target);
+        if (!item || !item.authors || !item.authors.length) {
+          return;
+        }
+        var element = this.$$('#' + item.letter);
+        if (!element) {
+          return;
+        }
+        this.animatedScroll(element.offsetTop);
       },
       _onScrolledChanged: function () {
         this.toggleClass('active', this.scrolled, this.$.top);
