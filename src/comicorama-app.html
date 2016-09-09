@@ -50,6 +50,19 @@
       neon-animated-pages {
         overflow: hidden;
       }
+
+      #intro {
+        @apply(--layout-fit);
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        background-color: var(--comicorama-background-color);
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      #exlibris {
+        @apply(--layout-self-center);
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -79,6 +92,10 @@
         <comicorama-book-page id="book" route="{{bookRoute}}"></comicorama-book-page>
       </neon-animated-pages>
     </app-header-layout>
+
+    <div id="intro" hidden="[[!intro]]">
+      <object id="introObject" type="image/svg+xml" data="/img/comicorama-exlibris.svg"></object>
+    </div>
   </template>
 
   <script>
@@ -99,6 +116,44 @@
           this.set('mainTitle', this.page.title);
         }
         this.notifyPath('page.scrolled');
+      },
+      ready: function () {
+        this.intro = true;
+      },
+      attached: function () {
+        var introObject = document.getElementById('introObject');
+		    introObject.addEventListener('load', function() {
+			    var svg = introObject.getSVGDocument();
+			    var delay = 0.25;
+			    var groups = ['books1', 'books4', 'books2', 'books3', 'bookshelf', 'row1', 'row2', 'row3'];
+
+          svg.getElementById('book').style.opacity = '0';
+          svg.getElementById('tatjana').style.opacity = '0';
+			    for (var i in groups) {
+				    svg.getElementById(groups[i]).style.opacity = '0';
+			    }
+
+			    setTimeout(function () {
+				    svg.getElementById('book').style.transition = 'opacity 1s 0s';
+            svg.getElementById('tatjana').style.transition = 'opacity 1s 0s';
+				    svg.getElementById('book').style.opacity = '1';
+            svg.getElementById('tatjana').style.opacity = '1';
+				    for (var i in groups) {
+					    svg.getElementById(groups[i]).style.transition = 'opacity ' + delay + 's ' + (1 + i * delay) + 's';
+					    svg.getElementById(groups[i]).style.opacity = '1';
+				    }
+			    }, 0);
+		    });
+
+        this.async(function () {
+          this.$.intro.style['opacity'] = '0';
+          this.async(function () {
+            this.intro = false;
+          }, 1000);
+        }, 5000);
+      },
+      onExlibrisready: function () {
+        alert('ready');
       }
     });
   </script>
