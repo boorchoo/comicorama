@@ -1,0 +1,94 @@
+<script>
+  ComicoramaUserBehaviorImpl = {
+    properties: {
+      user: {
+        type: Object,
+        notify: true,
+        value: false
+      }
+    },
+    listeners: {
+      'comicorama-fb-init-finish': '_onFBInitFinish',
+      'comicorama-fb-login-response': '_onFBLoginResponse',
+      'comicorama-fb-api-response': '_onFBApiResponse',
+      'comicorama-fb-logout-response': '_onFBLogoutResponse'
+    },
+    _onFBInitFinish: function () {
+      var $this = this;
+      FB.getLoginStatus(function (response) {
+        $this.fire('comicorama-fb-login-response', response);
+      });
+    },
+    _onFBLoginResponse: function (e) {
+      var response = !e || !e.detail ? null : e.detail;
+      if (!response || !response.status || response.status !== 'connected') {
+        this.user = null;
+        return;
+      }
+      var $this = this;
+      FB.api('/me', {fields: 'email, first_name, last_name'} , function (response) {
+        $this.fire('comicorama-fb-api-response', response);
+      });
+    },
+    _onFBApiResponse: function (e) {
+      var response = !e || !e.detail ? null : e.detail;
+      if (!response || !response.id) {
+        this.user = null;
+        return;
+      }
+      this.user = {
+        id: response.id,
+        email: response.email,
+        firstName: response.first_name,
+        lastName: response.last_name,
+        picture: "https://graph.facebook.com/v2.7/" + response.id + "/picture"
+      };
+    },
+    _onFBLogoutResponse: function () {
+      this.user = null;
+    },
+    ready: function () {
+      if (typeof FB === 'undefined') {
+        (function(d, s, id){
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) {return;}
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/sdk.js";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+      }
+
+      window.fbAsyncInit = function ($this) {
+        return function () {
+          FB.init({
+            appId: '1597212510575265',
+            xfbml: true,
+            cookie: true,
+            version: 'v2.7'
+          });
+          $this.fire('comicorama-fb-init-finish');
+        };
+      }(this);
+    },
+    login: function () {
+      if (typeof FB === 'undefined') {
+        return;
+      }
+      var $this = this;
+      FB.login(function (response) {
+        $this.fire('comicorama-fb-login-response', response);
+      });
+    },
+    logout: function () {
+      if (typeof FB === 'undefined') {
+        return;
+      }
+      var $this = this;
+      FB.logout(function (response) {
+        $this.fire('comicorama-fb-logout-response', response);
+      });
+    }
+  };
+
+  ComicoramaUserBehavior = [ ComicoramaUserBehaviorImpl ];
+</script>

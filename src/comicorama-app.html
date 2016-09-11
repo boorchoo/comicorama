@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <link rel="import" href="comicorama-page-selector-behavior.html">
+<link rel="import" href="comicorama-user-behavior.html">
 
 <link rel="import" href="comicorama-styles.html">
 
@@ -74,6 +75,42 @@
           font-size: var(--comicorama-font-size-title1-small-screen);
         }
       }
+
+      #userContainer {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        opacity: 1;
+        transition: opacity 1s;
+      }
+
+      #userContainer.not-ready {
+        visibility: hidden;
+        opacity: 0;
+      }
+
+      #userContainer .sign-in {
+        @apply(--comicorama-font-title);
+        color: var(--comicorama-base-color);
+        transition: color 0.5s;
+        cursor: pointer;
+      }
+
+      #userContainer .sign-in:hover {
+        color: var(--comicorama-accent-color);
+      }
+
+      #userContainer .user {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      #userContainer .user iron-image {
+        @apply(--layout-self-center);
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+        cursor: pointer;
+      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -88,6 +125,12 @@
         <app-toolbar>
           <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
           <div main-title class="main-title">{{mainTitle}}</div>
+          <div id="userContainer">
+            <div class="sign-in" hidden="[[user]]" on-tap="login">Sign in</div>
+            <div class="user" hidden="[[!user]]" on-tap="logout">
+              <iron-image src="[[user.picture]]" preload fade sizing="cover"></iron-image>
+            </div>
+          </div>
         </app-toolbar>
       </app-header>
       <neon-animated-pages id="pages"
@@ -114,11 +157,18 @@
     Polymer({
       is: 'comicorama-app',
       behaviors: [
-        ComicoramaPageSelectorBehavior
+        ComicoramaPageSelectorBehavior,
+        ComicoramaUserBehavior
+      ],
+      observers: [
+        '_onUserChanged(user)'
       ],
       listeners: {
         'comicorama-change-route': '_onChangeRoute',
         'comicorama-change-app-header': '_onChangeAppHeader'
+      },
+      _onUserChanged: function (user) {
+        this.toggleClass('not-ready', user === false, this.$.userContainer);
       },
       _onChangeRoute: function (e) {
         this.set('route.path', e.detail.path);
@@ -130,7 +180,7 @@
         this.notifyPath('page.scrolled');
       },
       ready: function () {
-        this.intro = true;
+        this.intro = false;
       },
       attached: function () {
         var introObject = document.getElementById('introObject');
