@@ -1,0 +1,56 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="comicorama-fixed-aspect-ratio-container">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      #container {
+        display: block;
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+        @apply(--comicorama-fixed-aspect-ratio-container);
+      }
+    </style>
+
+    <div id="container">
+      <content></content>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-fixed-aspect-ratio-container',
+      properties: {
+        aspectRatio: {
+          type: Number,
+          notify: true,
+          value: 1
+        }
+      },
+      updateLayout: function () {
+        var width = this.offsetWidth;
+        var height = this.offsetHeight;
+        if (!width || !height) {
+          return;
+        }
+        var containerWidth = width;
+        var containerHeight = Math.ceil(containerWidth * this.aspectRatio);
+        if (containerHeight > height) {
+          containerHeight = height;
+          containerWidth = Math.ceil(containerHeight / this.aspectRatio);
+        }
+        this.$.container.style['width'] = containerWidth + 'px';
+        this.$.container.style['height'] = containerHeight + 'px';
+        this.$.container.style['left'] = Math.ceil((width - containerWidth) / 2) + 'px';
+        this.$.container.style['top'] = Math.ceil((height - containerHeight) / 2) + 'px';
+      }
+    });
+  </script>
+</dom-module>
