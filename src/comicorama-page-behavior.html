@@ -57,7 +57,7 @@
       '_scrollHandler(scrollTarget)'
     ],
     listeners: {
-      'iron-resize': '_scrollHandler',
+      'iron-resize': '_onIronResize',
       'comicorama-page-entry-start': '_onEntryStart',
       'comicorama-page-entry-finish': '_onEntryFinish',
       'comicorama-page-exit-start': '_onExitStart',
@@ -71,6 +71,13 @@
     },
     _changeAppFooter: function (scrolledFromBottom) {
       this.fire('comicorama-change-app-footer');
+    },
+    _scrollHandler: function () {
+      this.scrolledFromTop = this._scrollTop > 0;
+      this.scrolledFromBottom = (this.scrollTarget.scrollHeight - this._scrollTargetHeight - this._scrollTop) > 0;
+    },
+    _onIronResize: function () {
+      this._scrollHandler();
     },
     _onEntryStart: function (e) {
       this.offscreen = false;
@@ -102,10 +109,6 @@
         this.onExitFinish();
       }
       e.stopPropagation();
-    },
-    _scrollHandler: function () {
-      this.scrolledFromTop = this._scrollTop > 0;
-      this.scrolledFromBottom = (this.scrollTarget.scrollHeight - this._scrollTargetHeight - this._scrollTop) > 0;
     },
     animatedScroll: function (endScrollTop) {
       var startScrollTop = this._scrollTop;
