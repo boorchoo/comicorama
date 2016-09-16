@@ -62,12 +62,12 @@
       #top {
         position: fixed;
         right: 48px;
-        bottom: -56px;
+        bottom: -64px;
         transition: bottom 0.25s;
       }
 
       #top.active {
-        bottom: 32px;
+        bottom: 64px;
       }
 
       paper-fab {
@@ -133,7 +133,7 @@
         ComicoramaCommonBehavior
       ],
       observers: [
-        '_onScrolledChanged(scrolled)',
+        '_onScrolledFromTopChanged(scrolledFromTop)',
         '_onAuthorsResultChanged(authorsResult)'
       ],
       ready: function () {
@@ -162,6 +162,7 @@
             }
           }
         }
+        this.async(this.notifyResize, 1);
       },
       sortAuthorsByName: function (a, b) {
         var nameA = a.name.toUpperCase();
@@ -189,8 +190,8 @@
         }
         this.animatedScroll(element.offsetTop);
       },
-      _onScrolledChanged: function () {
-        this.toggleClass('active', this.scrolled, this.$.top);
+      _onScrolledFromTopChanged: function () {
+        this.toggleClass('active', this.scrolledFromTop, this.$.top);
       }
     });
   </script>
