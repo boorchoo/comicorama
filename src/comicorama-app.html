@@ -29,12 +29,12 @@
       }
 
       app-header {
-        height: 6rem;
-        background-color: white;
+        height: var(--comicorama-header-height);
+        background-color: var(--comicorama-background-color);
       }
 
       app-header app-toolbar {
-        height: 6rem;
+        height: var(--comicorama-header-height);
       }
 
       app-header app-toolbar img.logo {
@@ -50,7 +50,55 @@
       }
 
       neon-animated-pages {
+        margin-bottom: var(--comicorama-footer-height);
         overflow: hidden;
+      }
+
+      footer {
+        position: absolute;
+        width: 100%;
+        height: var(--comicorama-footer-height);
+        left: 0;
+        bottom: 0;
+        @apply(--layout-horizontal);
+        @apply(--layout-center-justified);
+        background-color: var(--comicorama-background-color);
+      }
+
+      footer::before {
+        position: absolute;
+        right: 0px;
+        top: -5px;
+        left: 0px;
+        width: 100%;
+        height: 5px;
+        content: "";
+        transition: opacity 0.4s;
+        pointer-events: none;
+        opacity: 0;
+        box-shadow: inset 0px -5px 6px -3px rgba(0, 0, 0, 0.4);
+        will-change: opacity;
+      }
+
+      footer[shadow]::before {
+        opacity: 1;
+      }
+
+      footer .footer-logo {
+        @apply(--layout-self-center);
+      }
+
+      footer .footer-logo img {
+        width: var(--comicorama-footer-logo-width);
+        padding-left: var(--comicorama-horizontal-padding);
+        padding-top: 4px;
+        padding-right: var(--comicorama-horizontal-padding);
+      }
+
+      footer div {
+        @apply(--layout-self-center);
+        @apply(--comicorama-font-title);
+        font-size: 20px;
       }
 
       #intro {
@@ -121,7 +169,7 @@
     <app-route route="{{route}}" pattern="/:page" data="{{routeData}}"></app-route>
 
     <app-header-layout fullbleed has-scrolling-region>
-      <app-header fixed shadow="{{page.scrolled}}">
+      <app-header fixed shadow="{{page.scrolledFromTop}}">
         <app-toolbar>
           <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
           <div main-title class="main-title">{{mainTitle}}</div>
@@ -146,6 +194,10 @@
         <comicorama-books-page id="books" route="{{booksRoute}}"></comicorama-books-page>
         <comicorama-book-page id="book" route="{{bookRoute}}"></comicorama-book-page>
       </neon-animated-pages>
+      <footer shadow$="{{page.scrolledFromBottom}}">
+        <a href="/home" alt="" class="footer-logo"><img src="/img/comicorama-logo.png"></a>
+        <div class="flex">Comicorama</div>
+      </footer>
     </app-header-layout>
 
     <div id="intro" hidden="[[!intro]]">
@@ -165,7 +217,8 @@
       ],
       listeners: {
         'comicorama-change-route': '_onChangeRoute',
-        'comicorama-change-app-header': '_onChangeAppHeader'
+        'comicorama-change-app-header': '_onChangeAppHeader',
+        'comicorama-change-app-footer': '_onChangeAppFooter'
       },
       _onUserChanged: function (user) {
         this.toggleClass('not-ready', user === false, this.$.userContainer);
@@ -177,7 +230,10 @@
         if (this.page && typeof this.page.title === 'string' && this.mainTitle !== this.page.title) {
           this.set('mainTitle', this.page.title);
         }
-        this.notifyPath('page.scrolled');
+        this.notifyPath('page.scrolledFromTop');
+      },
+      _onChangeAppFooter: function () {
+        this.notifyPath('page.scrolledFromBottom');
       },
       ready: function () {
         this.intro = false;

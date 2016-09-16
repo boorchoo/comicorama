@@ -34,7 +34,7 @@
       ],
       listeners: {
         'iron-items-changed': '_onIronItemsChanged',
-        'iron-resize': 'breakLines'
+        'iron-resize': '_onIronResize'
       },
       ready: function () {
         this.selectable = 'comicorama-list-item';
@@ -54,10 +54,13 @@
           }, 1);
         }
       },
+      _onIronResize: function () {
+        this.breakLines();
+      },
       _onIronItemsChanged: function () {
         this.disableItems();
         this.async(function () {
-          this.breakLines();
+          this.notifyResize();
           if (!this.disabled) {
             this.enableItems();
           }

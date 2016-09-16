@@ -20,7 +20,12 @@
         notify: true,
         value: true
       },
-      scrolled: {
+      scrolledFromTop: {
+        type: Boolean,
+        notify: true,
+        value: false
+      },
+      scrolledFromBottom: {
         type: Boolean,
         notify: true,
         value: false
@@ -47,10 +52,12 @@
       }
     },
     observers: [
-      '_changeAppHeader(title, scrolled)',
+      '_changeAppHeader(title, scrolledFromTop)',
+      '_changeAppFooter(scrolledFromBottom)',
       '_scrollHandler(scrollTarget)'
     ],
     listeners: {
+      'iron-resize': '_scrollHandler',
       'comicorama-page-entry-start': '_onEntryStart',
       'comicorama-page-entry-finish': '_onEntryFinish',
       'comicorama-page-exit-start': '_onExitStart',
@@ -59,13 +66,17 @@
     ready: function () {
       this.scrollTarget = this;
     },
-    _changeAppHeader: function (title, scrolled) {
+    _changeAppHeader: function (title, scrolledFromTop) {
       this.fire('comicorama-change-app-header');
+    },
+    _changeAppFooter: function (scrolledFromBottom) {
+      this.fire('comicorama-change-app-footer');
     },
     _onEntryStart: function (e) {
       this.offscreen = false;
       this.scroll(0, 0);
       this._changeAppHeader();
+      this._changeAppFooter();
 
       if (this.onEntryStart) {
         this.onEntryStart();
@@ -93,7 +104,8 @@
       e.stopPropagation();
     },
     _scrollHandler: function () {
-      this.scrolled = this._scrollTop !== 0;
+      this.scrolledFromTop = this._scrollTop > 0;
+      this.scrolledFromBottom = (this.scrollTarget.scrollHeight - this._scrollTargetHeight - this._scrollTop) > 0;
     },
     animatedScroll: function (endScrollTop) {
       var startScrollTop = this._scrollTop;
