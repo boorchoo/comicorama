@@ -60,9 +60,11 @@
         height: var(--comicorama-footer-height);
         left: 0;
         bottom: 0;
+        padding: 0;
         @apply(--layout-horizontal);
         @apply(--layout-center-justified);
         background-color: var(--comicorama-background-color);
+        cursor: default;
       }
 
       footer::before {
@@ -95,10 +97,28 @@
         padding-right: var(--comicorama-horizontal-padding);
       }
 
+      footer .nosocode-logo {
+      }
+
+      footer .nosocode-logo img {
+        width: 44px;
+        height: 44px;
+      }
+
       footer div {
         @apply(--layout-self-center);
+        @apply(--comicorama-font);
+        font-size: 20px;
+      }
+
+      footer div.title {
         @apply(--comicorama-font-title);
         font-size: 20px;
+      }
+
+      footer iron-icon {
+        padding-bottom: 4px;
+        color: var(--comicorama-accent-color);
       }
 
       #intro {
@@ -138,13 +158,6 @@
 
       #userContainer .sign-in {
         @apply(--comicorama-font-title);
-        color: var(--comicorama-base-color);
-        transition: color 0.5s;
-        cursor: pointer;
-      }
-
-      #userContainer .sign-in:hover {
-        color: var(--comicorama-accent-color);
       }
 
       #userContainer .user {
@@ -174,7 +187,7 @@
           <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
           <div main-title class="main-title">{{mainTitle}}</div>
           <div id="userContainer">
-            <div class="sign-in" hidden="[[user]]" on-tap="login">Sign in</div>
+            <div class="sign-in comicorama-link" hidden="[[user]]" on-tap="login">Sign in</div>
             <div class="user" hidden="[[!user]]" on-tap="logout">
               <iron-image src="[[user.picture]]" preload fade sizing="cover"></iron-image>
             </div>
@@ -196,7 +209,14 @@
       </neon-animated-pages>
       <footer shadow$="{{page.scrolledFromBottom}}">
         <a href="/home" alt="" class="footer-logo"><img src="/img/comicorama-logo.png"></a>
-        <div class="flex">Comicorama</div>
+        <div class="flex title">Comicorama</div>
+        <div style="padding-top: 4px; padding-right: 4px;">
+          Made with <iron-icon icon="icons:favorite"></iron-icon> by <a href="http://www.nosocode.com/" alt="Nosocode" target="_blank" class="comicorama-link">Nosocode</a>
+        </div>
+        <a href="http://www.nosocode.com/" alt="Nosocode" target="_blank" class="nosocode-logo" style="padding-right: 16px;"><img src="/img/nosocode-logo.png"></a>
+        <div hidden style="padding-right: 16px;">
+          Copyright &copy; 2016 <a href="http://www.nosocode.com/" alt="Nosocode" target="_blank" class="comicorama-link">Nosocode</a>
+        </div>
       </footer>
     </app-header-layout>
 

@@ -5,11 +5,13 @@
 <link rel="import" href="comicorama-page-behavior.html">
 <link rel="import" href="comicorama-common-behavior.html">
 
+<link rel="import" href="comicorama-styles.html">
+
 <link rel="import" href="comicorama-service-call.html">
 
 <dom-module id="comicorama-authors-page">
   <template>
-    <style include="iron-flex iron-flex-alignment iron-positioning">
+    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
       :host {
         display: block;
         @apply(--layout-fit);
@@ -27,15 +29,6 @@
         @apply(--comicorama-font);
         font-size: 1.4rem;
         font-weight: 400;
-      }
-
-      .alphabet span {
-        transition: color 0.25s;
-        cursor: pointer;
-      }
-
-      .alphabet span:hover {
-        color: var(--comicorama-accent-color);
       }
 
       .alphabet span[data-empty] {
@@ -92,14 +85,6 @@
       .author a {
         @apply(--comicorama-font);
         font-size: 1.4rem;
-        text-decoration: none;
-        color: #000000;
-        cursor: pointer;
-        transition: color 0.25s;
-      }
-
-      .author a:hover {
-        color: var(--comicorama-accent-color);
       }
     </style>
 
@@ -107,7 +92,7 @@
 
     <div class="alphabet">
       <template is="dom-repeat" id="alphabet" items="[[authorsByLetter]]">
-        <span on-tap="scrollToLetter" data-empty$="[[!item.authors.length]]">[[item.letter]]</span>
+        <span on-tap="scrollToLetter" data-empty$="[[!item.authors.length]]" class="comicorama-link">[[item.letter]]</span>
       </template>
     </div>
     <template is="dom-repeat" items="[[authorsByLetter]]">
@@ -115,7 +100,7 @@
         <div class="letter">[[item.letter]]</div>
         <div class="authors-container">
           <template is="dom-repeat" items="[[item.authors]]" as="author" sort="sortAuthorsByName">
-            <div class="author"><a href="[[getAuthorBooksRoutePath(author)]]">[[author.name]]</a></div>
+            <div class="author"><a href="[[getAuthorBooksRoutePath(author)]]" class="comicorama-link">[[author.name]]</a></div>
           </template>
         </div>
       </div>

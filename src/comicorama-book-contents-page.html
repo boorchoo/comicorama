@@ -20,12 +20,36 @@
         @apply(--comicorama-font-title);
         font-size: 1.777rem;
       }
+
+      .credits-container {
+        @apply(--comicorama-font);
+        font-size: 1.4rem;
+        padding-left: 4px;
+      }
+
+      .author {
+        margin-bottom: 8px;
+        text-transform: none;
+      }
+
+      .credit {
+        font-size: 1.4ex;
+        text-transform: uppercase;
+        margin-right: 8px;
+      }
     </style>
 
     <div class="comicorama-book-section-title">Contents<iron-icon class="comicorama-book-section-close" icon="icons:close" on-tap="close"></iron-icon></div>
     <ol>
-      <template is="dom-repeat" items="[[data.book]]">
-        <li>[[getBookTitle(item)]]</li>
+      <template is="dom-repeat" items="[[data.book]]" as="book">
+        <li>
+          <div class="title">[[getBookTitle(book)]]</div>
+          <div class="credits-container">
+            <template is="dom-repeat" items="[[book.author]]" as="author">
+              <div class="author"><span class="credit">[[author.credit]]&nbsp;</span><a href="[[getAuthorBooksRoutePath(author)]]" class="comicorama-link">[[author.name]]</a></div>
+            </template>
+          </div>
+        </li>
       </template>
     </ol>
   </template>
