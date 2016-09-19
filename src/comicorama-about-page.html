@@ -18,15 +18,16 @@
 
       #main {
         @apply(--layout-fit);
+        margin: 24px;
       }
 
       .container {
         display: block;
         position: absolute;
-        width: 50%;
+        width: 33.33%;
         height: 50%;
         opacity: 1;
-        transition: all 1s;
+        transition: all 0.5s;
         --comicorama-fixed-aspect-ratio-container: {
           background-image: url('/img/comicorama-container-secondary-light.png');
           background-size: cover;
@@ -44,17 +45,74 @@
         z-index: 100;
       }
 
-      #what { left: 0; top: 0; }
+      .container .title {
+        @apply(--layout-fit);
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        padding-left: 15%;
+        padding-right: 15%;
+        padding-bottom: 5%;
+        @apply(--comicorama-font-title1);
+        text-align: center;
+        opacity: 1;
+        transition: opacity 0.5s;
+      }
+
+      .container .content {
+        display: block;
+        position: absolute;
+        @apply(--layout-vertical);
+        @apply(--comicorama-font);
+        text-align: left;
+        opacity: 0;
+        transition: opacity 0.5s;
+        overflow-y: auto;
+      }
+
+      .container .left { left: 8%; top: 8%; right: 55%; bottom: 15%; }
+      .container .right { left: 55%; top: 8%; right: 8%; bottom: 15%; }
+
+      .container.selected {
+        /*background-color: var(--comicorama-background-color);*/
+      }
+
+      .container.selected .title {
+        opacity: 0;
+      }
+
+      .container.selected .content {
+        opacity: 1;
+      }
+
+      #story {
+        left: 0;
+        top: 0;
+        --comicorama-fixed-aspect-ratio-container: {
+          background-image: url('/img/comicorama-container-base.png');
+          background-size: cover;
+          cursor: pointer;
+        };
+      }
+      #story.item-selected { left: 0; top: 0; }
+      
+      #story .title {
+        color: var(--comicorama-accent-color);
+      } 
+
+      #wide { left: 33.33%; top: 0; }
+      #wide.item-selected { left: 0; top: 0; }
+
+      #what { left: 66.67%; top: 0; }
       #what.item-selected { left: 0; top: 0; }
 
-      #why { left: 50%; top: 0; }
+      #why { left: 0; top: 50%; }
       #why.item-selected { left: 0; top: 0; }
 
-      #how { left: 0; top: 50%; }
+      #how { left: 33.33%; top: 50%; }
       #how.item-selected { left: 0; top: 0; }
 
       #founders {
-        left: 50%;
+        left: 66.67%;
         top: 50%;
         --comicorama-fixed-aspect-ratio-container: {
           background-image: url('/img/comicorama-container-base.png');
@@ -64,98 +122,88 @@
       }
       #founders.item-selected { left: 0; top: 0; }
 
-      .container .content {
-        @apply(--layout-fit);
-        @apply(--layout-vertical);
+      #founders .content {
         @apply(--layout-center-justified);
-        padding-left: 15%;
-        padding-right: 15%;
-        padding-bottom: 5%;
-        @apply(--comicorama-font);
         text-align: center;
-        opacity: 1;
-        transition: opacity 1s;
       }
 
-      .container .content.title {
-        @apply(--comicorama-font-title1);
-      }
-
-      .container .content.selected {
-        opacity: 0;
-      }
-
-      .container.selected .content {
-        opacity: 0;
-      }
-
-      .container.selected .content.selected {
-        opacity: 1;
-      }
-
-      #foundersContent {
-        @apply(--layout-horizontal);
-        @apply(--layout-center-justified);
-        padding-left: 0;
-        padding-right: 0;
-        padding-bottom: 2.5%;
-      }
-
-      #foundersContent div {
-        @apply(--layout-flex);
-        @apply(--layout-self-center);
-      }
-
-      #foundersContent div img {
-        width: 85%;
+      #founders img {
+        width: 100%;
         height: auto;
+        @apply(--layout-self-center);
       }
     </style>
 
-    <comicorama-fixed-aspect-ratio-container id="main" aspect-ratio="0.6625">
+    <comicorama-fixed-aspect-ratio-container id="main" aspect-ratio="0.4417">
       <iron-selector id="selector" multi selected-values="{{selected}}" on-iron-select="_onIronSelect" on-iron-deselect="_onIronDeselect">
-        <comicorama-fixed-aspect-ratio-container id="what" class="container" aspect-ratio="0.6625">
-          <div class="content title">What is<br>Comicorama</div>
-          <div class="content selected">
+        <comicorama-fixed-aspect-ratio-container id="story" class="container" aspect-ratio="0.6625" title="True story">
+          <div class="title">True story</div>
+          <div class="content left">
+            <p>Every good work of software starts by scratching a developer’s personal itch.<br>Eric Raymond</p>
+            <p>It was the summer of 1997. when I held my first comic book. It was the Sandman by Neil Gaiman, volume I.  Can you imagine how I felt after finishing my first story, my first 15 pages of this comic series? When Lord of Dreams escapes from the captivity and starts rebuilding his kingdom? You who have read it, you know.I was so fascinated by Neil’s writing that I wanted to read everything that Neil wrote. I want to read everything that Dave McKean illustrated, that Vertigo published. I want.. It never ends, you know. Even now, when I was read 98 comic books in 76 stories in 1093 pages, I am not done. I have planty stories that are waiting for me. So, now, when I look at this first loved story, I feel the same. I can read it all, and all over again, and I am in Dreamland thanks to Neil, and Sam, and Dave.</p>
+            <p>Years past, and every month or day, I read new comic stories, with the same or new artists, and somehow, I lost track of it. You can not have all of that stories at glance at once, you know. You must stop, and rethink about it. Who wrote Konan The Barbarian? What are the stories in it? How many people illustrated Saga of Swamp thing? Who they are? And for the God’s sake, how many stories I read till now? How can I know?</p>
+          </div>
+          <div class="content right"> 
+            <p>I tried to find the answers online, on web, so my search took plenty of time, with lot of carefully chosed web pages, web pages of one publisher, the other publisher, one author, one more author, one artist.. some comic forums, and I still do not have all the answers.</p> 
+            <p>Then I decided. I had to do something with this.And, I had a lot of luck about my problem, you know, because I am software developer, so it was challenge for me to start thinking about making my own unique library of comics, with research, analysis and all connections, so I can never lose track again.And, here we are.Throughout the history of web, people use data to make more informed decisions. What to read next? Comic data can be found all over the web. Every person can start online search for their next choice. Some of searches are Endless, some of them, if you are lucky, are not. Comicorama gathers relevant informations and wants to make sure that comic data are available on one web page to as many people as possible. All Your comic data in one web page. Web page that you can return to when you want. Your personal studio for reading, review and analysis. Can you imagine it?</p> 
+            <p>Milan</p>
+          </div>
+        </comicorama-fixed-aspect-ratio-container>
+        <comicorama-fixed-aspect-ratio-container id="wide" class="container" aspect-ratio="0.6625" title="Wide view of the world of comics">
+          <div class="title">Wide view of<br>the world of<br>comics</div>
+          <div class="content left">
+            <p>Comicorama is a new personal library, new way of research and analysis site. Because everything in tech and media is constantly being rethought, refreshed, and renewed, Comicorama’s aim is to reimagine tech personal library, and include reviews, research and analysis in it. Wide view of the world of comics.</p>
+          </div>
+          <div class="content right">
+            <p>Comicorama provides a wonderful reading experience coupled with content in high quality standard of esthethics, simple design and makes reading completed story, entertaining and fun. Everybody can enjoys. Overjoyed not just with the idea, but with the online community of shared experiences, the descriptions and photography of the detail and even a personal connection with us and ours experience. For us in Comicorama this is not just about reading and knowing stories, it’s being part of a noble cause. Wide view of the world of comics.</p>
+          </div>
+        </comicorama-fixed-aspect-ratio-container>
+        <comicorama-fixed-aspect-ratio-container id="what" class="container" aspect-ratio="0.6625" title="What is Comicorama">
+          <div class="title">What is<br>Comicorama</div>
+          <div class="content left">
             <p>Comicorama is a great way to keep Your personal comic book library well organized, to keep track of Your readings, to exchange reviews and research about comics.</p> 
-            <p>Started up in 2015 in Belgrade, like a result of a personal matter of inabillity to find wanted data in one place on web, and not being satisfied with spent time on-line searching for it. At the beginning Comicorama project was one web page boorchoo.rs, somethnig like a gallery of read comics with no additional content. It was fun and comprehensive, but not included Comicorama core beliefs. So, next step was envisioned building website with complete desirable content to make access in all needed comics data in comprehensive, easy reached and possibile way, like an exceptional experience for passionate readers. If you are reader, then you know that when you finished reading, it is not exactly the end. It is more like a begining.</p> 
+            <p>Started up in 2015 in Belgrade, like a result of a personal matter of inabillity to find wanted data in one place on web, and not being satisfied with spent time on-line searching for it. At the beginning Comicorama project was one web page boorchoo.rs, somethnig like a gallery of read comics with no additional content. It was fun and comprehensive, but not included Comicorama core beliefs. So, next step was envisioned building website with complete desirable content to make access in all needed comics data in comprehensive, easy reached and possibile way, like an exceptional experience for passionate readers. If you are reader, then you know that when you finished reading, it is not exactly the end. It is more like a begining.</p>
+          </div> 
+          <div class="content right">
             <p>Comicorama is wholly owned by Nosocode, which is redefining the modern team by empowering the smartest digital voice with the technology ways to create and distribute premium content, and connect with an audience of affluent and educated young adults worldwide.</p> 
             <p>Powered by growing community, Comicorama is great place to keep in touch with news about Your favourite comics. We owe a huge thanks to our community for joining us on this awesome journey, and we hope that you’ll continue to be a part of our story.</p>
           </div>
         </comicorama-fixed-aspect-ratio-container>
-        <comicorama-fixed-aspect-ratio-container id="why" class="container" aspect-ratio="0.6625">
-          <div class="content title">Why to use<br>Comicorama</div>
-          <div class="content selected">
-            <p>Comicorama brings its unique brand of comics personal library studio to Your experience. Not to mention, it’s super easy to work with Comicorama as long as you go along with all of instructions. Also, there are just several instructions. This is the basis for a brighter future of online libraring. Simplicity. Built on a hand up, not a handout, a series of illustrations for the set of comics with lot of details, launched by different publishers houses.</p>  
+        <comicorama-fixed-aspect-ratio-container id="why" class="container" aspect-ratio="0.6625" title="Why to use Comicorama">
+          <div class="title">Why to use<br>Comicorama</div>
+          <div class="content left">
+            <p>Comicorama brings its unique brand of comics personal library studio to Your experience. Not to mention, it’s super easy to work with Comicorama as long as you go along with all of instructions. Also, there are just several instructions. This is the basis for a brighter future of online libraring. Simplicity. Built on a hand up, not a handout, a series of illustrations for the set of comics with lot of details, launched by different publishers houses.</p>
+          </div>
+          <div class="content right">  
             <p>Comicorama represent us and our intentions honestly to you. We will be ourselves, even if it means that we can be little less then perfect or maybe occasionally silly or dorky. We belive in giving back to this amazing web machine, and we will work hard to provide free resources. Comicorama is dedicated to creating and maintaining user friendly and relaxed content environment. There is no better feeling than doing what you love.</p> 
           </div>
         </comicorama-fixed-aspect-ratio-container>
-        <comicorama-fixed-aspect-ratio-container id="how" class="container" aspect-ratio="0.6625">
-          <div class="content title">How to use<br>Comicorama</div>
-          <div class="content selected">
+        <comicorama-fixed-aspect-ratio-container id="how" class="container" aspect-ratio="0.6625" title="How to use Comicorama">
+          <div class="title">How to use<br>Comicorama</div>
+          <div class="content left">
             <p>BROWSE</p>
             <p>This is where You can view all comics from our database and include them into Your personal library. Embracing individual design personality, and finding inspiration for reading in the process. We wanted to create a brand for Comics Personal Library Studio that embraced its interior design skills, as well as its unique personality.</p> 
             <p>The main element of the brand is a graphic combination of patterns that overlap each other - they represent the images and colors you might find on an interior designer’s inspiration board, and also refer to the play of patterns, colors, light. Patterns can be assembled in various combinations, depending on cover colour.</p> 
             <p>So, You can browse by several chriteria. Series, One shots, Publishers, Autors, Artist. Your movement on that journey is very easy and smooth, You can follow the instruction and come one step back.</p>
-            <p>The end result of a browse option: a system that speaks to both classic design and an innovative aesthetic and provides information gathering it on one place.</p> 
+            <p>The end result of a browse option: a system that speaks to both classic design and an innovative aesthetic and provides information gathering it on one place.</p>
+          </div>
+          <div class="content right"> 
             <p>SEARCH</p>
             <p>Comicorama really synthesized what we were looking for, elevated the vision and made it come to life just by typing content that you are looking for. You can search for Headlines, Series, One shots, Authors, Artists, Publishers.</p>
             <p>PLAYGROUND</p>
           </div>
         </comicorama-fixed-aspect-ratio-container>
-        <comicorama-fixed-aspect-ratio-container id="founders" class="container" aspect-ratio="0.6625">
-          <div class="content title">Comicorama<br>Founders</div>
-          <div id="foundersContent" class="content selected">
-            <div>
-              <h2>Milan</h2>
-              <p>Mostly crazy.</p>
-              <img src="/img/comicorama-milan.png">
-            </div>
-            <div>
-              <h2>Tatjana</h2>
-              <p>Her endless energy made all this possible.</p>
-              <img src="/img/comicorama-tatjana.png">
-            </div>
+        <comicorama-fixed-aspect-ratio-container id="founders" class="container" aspect-ratio="0.6625" title="Founders">
+          <div class="title">Founders</div>
+          <div class="content left">
+            <h2>Milan</h2>
+            <p>Mostly crazy.</p>
+            <img src="/img/comicorama-milan.png">
+          </div>
+          <div class="content right">
+            <h2>Tatjana</h2>
+            <p>Her endless energy made all this possible.</p>
+            <img src="/img/comicorama-tatjana.png">
           </div>
         </comicorama-fixed-aspect-ratio-container>
       </iron-selector>
@@ -176,6 +224,8 @@
       },
       _onIronResize: function () {
         this.$.main.updateLayout();
+        this.$.story.updateLayout();
+        this.$.wide.updateLayout();
         this.$.what.updateLayout();
         this.$.why.updateLayout();
         this.$.how.updateLayout();
@@ -184,7 +234,8 @@
         this._scrollHandler();
       },
       ready: function () {
-         this.title = 'About Comicorama';
+         this._title = 'About';
+         this.title = this._title;
       },
       onEntryStart: function () {
         this.notifyResize();
@@ -202,17 +253,19 @@
         if (item._deselectHandle) {
           this.cancelAsync(item._deselectHandle);
           item._deselectHandle = null;
+          this.title = !item.title ? this._title : item.title;
           this.toggleClass('selected', true, item);
           return;
         }
         this.toggleClass('item-selected', true, item);
 
         var $this = this;
-        var selectEffect = new KeyframeEffect(item, [], 1000);
+        var selectEffect = new KeyframeEffect(item, [], 500);
         selectEffect.onsample = function (timeFraction, effect) {
           var item = effect.target; 
           item.updateLayout();
           if (timeFraction === null && item._selectAnimation) {
+            $this.title = !item.title ? $this._title : item.title;
             $this.toggleClass('selected', true, item);
             item._selectAnimation = null;
           }
@@ -222,7 +275,7 @@
         e.stopPropagation();
       },
       _onIronDeselect: function (e) {
-        var delay = 1000;
+        var delay = 500;
         var item = e.detail.item;
         if (item._selectAnimation) {
           item._selectAnimation.cancel();
@@ -230,6 +283,7 @@
           delay = 0;
         }
         this.toggleClass('deselect-transition', true, item);
+        this.title = this._title;
         this.toggleClass('selected', false, item);
  
         item._deselectHandle = this.async(function () {
@@ -237,7 +291,7 @@
           this.toggleClass('item-selected', false, item);
 
           var $this = this;
-          var deselectEffect = new KeyframeEffect(item, [], 1000);
+          var deselectEffect = new KeyframeEffect(item, [], 500);
           deselectEffect.onsample = function (timeFraction, effect) {
             var item = effect.target; 
             item.updateLayout();
