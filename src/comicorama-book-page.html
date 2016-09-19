@@ -14,8 +14,8 @@
 
 <link rel="import" href="comicorama-service-call.html">
 <link rel="import" href="comicorama-book-menu-page.html">
-<link rel="import" href="comicorama-book-credits-page.html">
-<link rel="import" href="comicorama-book-contents-page.html">
+<link rel="import" href="comicorama-book-authors-page.html">
+<link rel="import" href="comicorama-book-stories-page.html">
 <link rel="import" href="comicorama-book-related-page.html">
 
 <dom-module id="comicorama-book-page">
@@ -52,8 +52,8 @@
       on-iron-deselect="_onIronDeselect"
       on-neon-animation-finish="_onNeonAnimationFinish">
       <comicorama-book-menu-page id="menu" menu-selected="{{menuSelected}}" data="{{bookResult}}"></comicorama-book-menu-page>
-      <comicorama-book-credits-page id="credits" hidden="[[!bookResult.author]]" data="{{bookResult}}"></comicorama-book-credits-page>
-      <comicorama-book-contents-page id="contents" hidden="[[!bookResult.book]]" data="{{bookResult}}"></comicorama-book-contents-page>
+      <comicorama-book-authors-page id="authors" hidden="[[!bookResult.author]]" data="{{bookResult}}"></comicorama-book-authors-page>
+      <comicorama-book-stories-page id="stories" hidden="[[!bookResult.book]]" data="{{bookResult}}"></comicorama-book-stories-page>
       <comicorama-book-related-page id="related" hidden="[[!bookResult.related_book]]" data="{{bookResult}}"></comicorama-book-related-page>
     </neon-animated-pages>
   </template>
