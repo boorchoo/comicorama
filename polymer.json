@@ -1,0 +1,15 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/comicorama-app/comicorama-app.html",
+  "fragments": [
+  ],
+  "sources": [
+    "src/**/*",
+    "img/**/*",
+    "bower.json",
+    ".htaccess"
+  ],
+  "includeDependencies": [
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}
