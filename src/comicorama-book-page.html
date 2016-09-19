@@ -51,7 +51,7 @@
       on-iron-select="_onIronSelect"
       on-iron-deselect="_onIronDeselect"
       on-neon-animation-finish="_onNeonAnimationFinish">
-      <comicorama-book-menu-page id="menu" data="{{bookResult}}"></comicorama-book-menu-page>
+      <comicorama-book-menu-page id="menu" menu-selected="{{menuSelected}}" data="{{bookResult}}"></comicorama-book-menu-page>
       <comicorama-book-credits-page id="credits" hidden="[[!bookResult.author]]" data="{{bookResult}}"></comicorama-book-credits-page>
       <comicorama-book-contents-page id="contents" hidden="[[!bookResult.book]]" data="{{bookResult}}"></comicorama-book-contents-page>
       <comicorama-book-related-page id="related" hidden="[[!bookResult.related_book]]" data="{{bookResult}}"></comicorama-book-related-page>
@@ -84,6 +84,7 @@
       },
       onExitFinish: function () {
         this.selectedPage = 'menu';
+        this.menuSelected = null;
       },
       _onBookResultChanged: function (bookResult) {
         var title = !bookResult ? null : this.getBookTitle(bookResult);

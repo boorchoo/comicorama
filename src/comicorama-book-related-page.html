@@ -3,6 +3,7 @@
 <link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 
 <link rel="import" href="comicorama-page-behavior.html">
+<link rel="import" href="comicorama-common-behavior.html">
 
 <link rel="import" href="comicorama-styles.html">
 
@@ -54,18 +55,13 @@
         }
       },
       behaviors: [
-        ComicoramaPageBehavior
+        ComicoramaPageBehavior,
+        ComicoramaCommonBehavior
       ],
       close: function() {
         this.fire('comicorama-change-route', {
           path: '#menu'
         });
-      },
-      getBookCover: function (book) {
-        return !book || !book.cover ? null : 'http://comicorama.local/' + book.cover;
-      },
-      getBookRoutePath: function (book) {
-        return !book || !book.idbook ? null : '/book/' + book.idbook;
       }
     });
   </script>

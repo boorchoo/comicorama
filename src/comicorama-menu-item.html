@@ -49,10 +49,10 @@
           notify: true,
           value: ''
         },
-        notAnimated: {
+        instant: {
           type: Boolean,
           notify: true,
-          observer: '_notAnimatedChanged',
+          observer: '_instantChanged',
           value: false
         },
         routePath: {
@@ -95,16 +95,16 @@
         Polymer.NeonAnimationRunnerBehavior
       ],
       listeners: {
-        'comicorama-menu-item-deselected': '_deselected',
-        'neon-animation-finish': '_onNeonAnimationFinish'
+        'comicorama-menu-item-deselected': '_deselected'
       },
       ready: function () {
         this.toggles = true;
       },
-      _notAnimatedChanged: function (newValue, oldValue) {
+      _instantChanged: function (newValue, oldValue) {
         if (newValue) {
           this.cancelAnimation();
           this._changeRouteIfActive();
+          this.active = false;
         }
         this.toggleClass('animated', !newValue, this.$.container);
       },
@@ -120,23 +120,21 @@
       _selected: function () {
         this.active = true;
         this.toggleClass('active', true, this.$.container);
-        if (!this.notAnimated) {
+        this._changeRouteIfActive();
+        if (this.instant) {
+          this.active = false;
+        } else {
           this.cancelAnimation();
           this.playAnimation('selected');
         }
-        this._changeRouteIfActive();
       },
       _deselected: function () {
         this.active = false;
         this.toggleClass('active', false, this.$.container);
-        if (!this.notAnimated) {
+        if (!this.instant) {
           this.cancelAnimation();
           this.playAnimation('deselected');
         }
-      },
-      _onNeonAnimationFinish: function (e) {
-        this._changeRouteIfActive();
-        e.stopPropagation();
       },
       _changeRouteIfActive: function () {
         if (this.active && this.routePath) {

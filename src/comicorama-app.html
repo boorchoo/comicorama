@@ -244,7 +244,13 @@
         this.toggleClass('not-ready', user === false, this.$.userContainer);
       },
       _onChangeRoute: function (e) {
-        this.set('route.path', e.detail.path);
+        var path = !e || !e.detail || !e.detail.path ? null : e.detail.path;
+        if (path === '_back') {
+          window.history.back();
+        } else {
+          window.history.pushState({}, null, path);
+          this.set('route.path', !path ? '/home' : path);
+        }
       },
       _onChangeAppHeader: function () {
         if (this.page && typeof this.page.title === 'string' && this.mainTitle !== this.page.title) {

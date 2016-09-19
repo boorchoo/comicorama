@@ -32,10 +32,11 @@
       }
     </style>
 
-    <comicorama-menu selected="{{selected}}">
+    <comicorama-menu selected="{{menuSelected}}">
       <comicorama-menu-item title="Credits" route-path="#credits" hidden="[[!data.author]]"></comicorama-menu-item>
       <comicorama-menu-item title="Contents" route-path="#contents" hidden="[[!data.book]]"></comicorama-menu-item>
       <comicorama-menu-item title="Related" route-path="#related" hidden="[[!data.related_book]]"></comicorama-menu-item>
+      <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
     </comicorama-menu>
   </template>
 
@@ -43,6 +44,11 @@
     Polymer({
       is: 'comicorama-book-menu-page',
       properties: {
+        menuSelected: {
+          type: String,
+          notify: true,
+          value: null
+        },
         animationConfig: {
           value: function() {
             return {
@@ -68,7 +74,7 @@
         ComicoramaPageBehavior
       ],
       onEntryStart: function () {
-        this.selected = null;
+        this.menuSelected = null;
       }
     });
   </script>
