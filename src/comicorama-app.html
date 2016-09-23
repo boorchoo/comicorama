@@ -9,7 +9,7 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button-light.html">
 
 <link rel="import" href="comicorama-page-selector-behavior.html">
 <link rel="import" href="comicorama-user-behavior.html">
@@ -123,9 +123,21 @@
         color: var(--comicorama-accent-color);
       }
 
-      paper-icon-button {
+      app-toolbar .menu {
+        @apply(--layout-self-center);
         width: 48px;
         height: 48px;
+      }
+
+      app-toolbar .menu iron-icon {
+        width: 32px;
+        height: 32px;
+      }
+      
+      app-toolbar .menu iron-image {
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
       }
 
       #intro {
@@ -151,33 +163,69 @@
         }
       }
 
-      #userContainer {
+      .user {
         @apply(--layout-vertical);
         @apply(--layout-center-justified);
-        opacity: 1;
-        transition: opacity 1s;
+        padding-top: 24px;
       }
 
-      #userContainer.not-ready {
-        visibility: hidden;
-        opacity: 0;
+      .user span {
+        @apply(--layout-flex);
+        @apply(--layout-self-end);
+        @apply(--comicorama-font);
+        margin-top: 4px;
+        font-size: 16px;
+        text-transform: none;
       }
 
-      #userContainer .sign-in {
-        @apply(--comicorama-font-title);
-      }
-
-      #userContainer .user {
-        @apply(--layout-vertical);
-        @apply(--layout-center-justified);
-      }
-
-      #userContainer .user iron-image {
-        @apply(--layout-self-center);
+      .user iron-image {
+        @apply(--layout-self-end);
         width: 48px;
         height: 48px;
         border-radius: 24px;
-        cursor: pointer;
+      }
+
+      app-drawer {
+        --app-drawer-width: 320px;
+        --app-drawer-scrim-background: rgba(0, 0, 0, 0.1);
+        cursor: default;
+      }
+
+      .drawer-items-container {
+        height: 100%;
+        overflow: auto;
+      }
+
+      .drawer-item {
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+        height: 32px;
+        padding: 16px;
+        @apply(--comicorama-font-title);
+        font-size: 20px;
+      }
+      
+      .drawer-item.header {
+        height: var(--comicorama-header-height);
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-bottom: 32px;
+      }
+
+      .drawer-item .comicorama-link {
+        color: var(--comicorama-base-color);
+      }
+
+      .drawer-item .comicorama-link:hover {
+        color: var(--comicorama-base-color);
+      }
+
+      .drawer-item .fb-link {
+        color: #3b5998;
+      }
+
+      .drawer-item .fb-link:hover {
+        color: #3b5998;
       }
     </style>
 
@@ -193,7 +241,10 @@
         <app-toolbar>
           <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
           <div main-title class="main-title">{{mainTitle}}</div>
-          <paper-icon-button icon="menu" on-tap="toggleDrawer"></paper-icon-button>
+          <button is="paper-icon-button-light" on-tap="toggleDrawer" class="menu">
+            <iron-icon hidden="[[userPictureLoaded]]" icon="menu"></iron-icon>
+            <iron-image hidden$="[[!userPictureLoaded]]" src="[[user.picture]]" loaded="{{userPictureLoaded}}" preload fade sizing="cover"></iron-image>
+          </button>
         </app-toolbar>
       </app-header>
       <neon-animated-pages id="pages"
@@ -223,10 +274,19 @@
     </app-header-layout>
 
     <app-drawer id="drawer" align="end">
-      <div id="userContainer">
-        <div class="sign-in comicorama-link" hidden="[[user]]" on-tap="login">Sign in</div>
-        <div class="user" hidden="[[!user]]" on-tap="logout">
-          <iron-image src="[[user.picture]]" preload fade sizing="cover"></iron-image>
+      <div class="drawer-items-container">
+        <div class="drawer-item header" on-tap="toggleDrawer">
+          <div hidden$="[[user]]">Sign in</div>
+          <div hidden$="[[!user]]" class="user">
+            <iron-image src="[[user.picture]]" preload fade sizing="cover"></iron-image>
+            <span>[[user.firstName]]&nbsp;[[user.lastName]]</span>
+          </div>
+        </div>
+        <div hidden$="[[user]]" class="drawer-item">
+          <div class="comicorama-link fb-link" on-tap="login">Continue with Facebook</div>
+        </div>
+        <div hidden$="[[!user]]" class="drawer-item">
+          <div class="comicorama-link" on-tap="logout">Sign out</div>
         </div>
       </div>
     </app-drawer>
