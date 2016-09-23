@@ -1,5 +1,4 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="comicorama-page-behavior.html">
 
@@ -7,7 +6,7 @@
 
 <dom-module id="comicorama-book-menu-page">
   <template>
-    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+    <style include="comicorama-styles">
       :host {
         display: block;
         @apply(--layout-vertical);
@@ -33,9 +32,9 @@
     </style>
 
     <comicorama-menu selected="{{menuSelected}}">
-      <comicorama-menu-item title="Stories" route-path="#stories" hidden="[[!data.book]]"></comicorama-menu-item>
-      <comicorama-menu-item title="Authors" route-path="#authors" hidden="[[!data.author]]"></comicorama-menu-item>
-      <comicorama-menu-item title="Related" route-path="#related" hidden="[[!data.related_book]]"></comicorama-menu-item>
+      <comicorama-menu-item title="Stories" route-path="#stories" hidden$="[[!data.book]]"></comicorama-menu-item>
+      <comicorama-menu-item title="Authors" route-path="#authors" hidden$="[[!data.author]]"></comicorama-menu-item>
+      <comicorama-menu-item title="Related" route-path="#related" hidden$="[[!data.related_book]]"></comicorama-menu-item>
       <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
     </comicorama-menu>
   </template>

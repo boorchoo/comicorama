@@ -1,6 +1,6 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/comicorama-app/comicorama-app.html",
+  "shell": "src/comicorama-app.html",
   "fragments": [
   ],
   "sources": [

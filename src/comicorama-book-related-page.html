@@ -1,6 +1,6 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button-light.html">
 
 <link rel="import" href="comicorama-page-behavior.html">
 <link rel="import" href="comicorama-common-behavior.html">
@@ -9,7 +9,7 @@
 
 <dom-module id="comicorama-book-related-page">
   <template>
-    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+    <style include="comicorama-styles">
       :host {
         display: block;
         @apply(--layout-fit);
@@ -21,7 +21,12 @@
       }
     </style>
 
-    <div class="comicorama-book-section-title">Related<iron-icon class="comicorama-book-section-close" icon="icons:close" on-tap="close"></iron-icon></div>
+    <div class="comicorama-book-page-header">
+      <span class="title">Related</span>
+      <button is="paper-icon-button-light" on-tap="close" class="close">
+        <iron-icon icon="close"></iron-icon>
+      </button>
+    </div>
     <comicorama-list disabled="{{offscreen}}">
       <template is="dom-repeat" items="[[data.related_book]]">
         <comicorama-list-item front-cover="[[getBookCover(item)]]" back-cover="[[getBookCover(item)]]" route-path="[[getBookRoutePath(item)]]"></comicorama-list-item>

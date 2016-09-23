@@ -1,11 +1,13 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=latin-ext" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed:300,400,700&subset=latin-ext" rel="stylesheet">
 
 <dom-module id="comicorama-styles">
   <template>
-    <style>
+    <style include="iron-flex iron-flex-alignment iron-positioning">
       :root {
 
         --comicorama-header-height: 96px;
@@ -55,24 +57,26 @@
         };
       }
 
-      .comicorama-book-section-title {
-        @apply(--comicorama-font-title1);
+      .comicorama-book-page-header {
+        @apply(--layout-horizontal);
         margin-bottom: 2rem;
+        padding-right: 16px;
       }
 
-      .comicorama-book-section-close {
-        --iron-icon-height: 2.827rem;
-        --iron-icon-width: 2.827rem;
-        float: right;
-        margin-right: 16px;
-        margin-bottom: 6px;
-        color: var(--comicorama-secondary-color);
-        cursor: pointer;
-        transition: color 0.5s;
+      .comicorama-book-page-header .title {
+        @apply(--layout-flex);
+        @apply(--comicorama-font-title1);
       }
 
-      .comicorama-book-section-close:hover {
-        color: var(--comicorama-base-color);
+      .comicorama-book-page-header .close {
+        @apply(--layout-self-center);
+        width: 48px;
+        height: 48px;
+      }
+
+      .comicorama-book-page-header .close iron-icon {
+        width: 32px;
+        height: 32px;
       }
 
       .comicorama-link {

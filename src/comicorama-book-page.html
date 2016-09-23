@@ -1,10 +1,8 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/iron-image/iron-image.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animated-pages.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animatable.html">
-<link rel="import" href="../../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 
 <link rel="import" href="comicorama-page-behavior.html">
 <link rel="import" href="comicorama-page-selector-behavior.html">
@@ -20,7 +18,7 @@
 
 <dom-module id="comicorama-book-page">
   <template>
-    <style include="comicorama-styles iron-flex iron-flex-alignment iron-positioning">
+    <style include="comicorama-styles">
       :host {
         display: block;
         @apply(--layout-horizontal);
@@ -52,9 +50,9 @@
       on-iron-deselect="_onIronDeselect"
       on-neon-animation-finish="_onNeonAnimationFinish">
       <comicorama-book-menu-page id="menu" menu-selected="{{menuSelected}}" data="{{bookResult}}"></comicorama-book-menu-page>
-      <comicorama-book-stories-page id="stories" hidden="[[!bookResult.book]]" data="{{bookResult}}"></comicorama-book-stories-page>
-      <comicorama-book-authors-page id="authors" hidden="[[!bookResult.author]]" data="{{bookResult}}"></comicorama-book-authors-page>
-      <comicorama-book-related-page id="related" hidden="[[!bookResult.related_book]]" data="{{bookResult}}"></comicorama-book-related-page>
+      <comicorama-book-stories-page id="stories" hidden$="[[!bookResult.book]]" data="{{bookResult}}"></comicorama-book-stories-page>
+      <comicorama-book-authors-page id="authors" hidden$="[[!bookResult.author]]" data="{{bookResult}}"></comicorama-book-authors-page>
+      <comicorama-book-related-page id="related" hidden$="[[!bookResult.related_book]]" data="{{bookResult}}"></comicorama-book-related-page>
     </neon-animated-pages>
   </template>
 
