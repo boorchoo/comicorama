@@ -73,6 +73,9 @@
       },
       breakLines: function () {
         var maxLineWidth = this.clientWidth; //NOTE: clientWidth includes padding
+        if (maxLineWidth === 0) {
+          return;
+        }
         var line = 0;
         var lineWidth = 0;
         for (var index in this.items) {
