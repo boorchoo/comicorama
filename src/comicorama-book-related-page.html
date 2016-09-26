@@ -7,6 +7,10 @@
 
 <link rel="import" href="comicorama-styles.html">
 
+<link rel="import" href="comicorama-list.html">
+<link rel="import" href="comicorama-list-item.html">
+<link rel="import" href="comicorama-book-data.html">
+
 <dom-module id="comicorama-book-related-page">
   <template>
     <style include="comicorama-styles">
@@ -21,17 +25,22 @@
       }
     </style>
 
-    <div class="comicorama-book-page-header">
-      <span class="title">Related</span>
-      <button is="paper-icon-button-light" on-tap="close" class="close">
-        <iron-icon icon="close"></iron-icon>
-      </button>
+    <div class="comicorama-book-page-container">
+      <div class="comicorama-book-page-header">
+        <span class="title">Related</span>
+        <button is="paper-icon-button-light" on-tap="close" class="close">
+          <iron-icon icon="close"></iron-icon>
+        </button>
+      </div>
+      <div class="comicorama-book-page-content">
+        <comicorama-list disabled="{{offscreen}}">
+          <template is="dom-repeat" items="[[data.related_book]]" as="book" filter="bookHasCover">
+            <comicorama-list-item front-cover="[[getBookCover(book)]]" back-cover="[[getBookCover(book)]]" route-path="[[getBookRoutePath(book)]]"></comicorama-list-item>
+          </template>
+        </comicorama-list>
+      </div>
+      <comicorama-book-data data="[[data]]"></comicorama-book-data>
     </div>
-    <comicorama-list disabled="{{offscreen}}">
-      <template is="dom-repeat" items="[[data.related_book]]" as="book" filter="bookHasCover">
-        <comicorama-list-item front-cover="[[getBookCover(book)]]" back-cover="[[getBookCover(book)]]" route-path="[[getBookRoutePath(book)]]"></comicorama-list-item>
-      </template>
-    </comicorama-list>
   </template>
 
   <script>

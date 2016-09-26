@@ -57,6 +57,11 @@
         };
       }
 
+      .comicorama-book-page-container {
+        @apply(--layout-vertical);
+        min-height: 100%;
+      }
+
       .comicorama-book-page-header {
         @apply(--layout-horizontal);
         margin-bottom: 2rem;
@@ -77,6 +82,10 @@
       .comicorama-book-page-header .close iron-icon {
         width: 32px;
         height: 32px;
+      }
+
+      .comicorama-book-page-content {
+        @apply(--layout-flex);
       }
 
       .comicorama-link {

@@ -5,6 +5,8 @@
 
 <link rel="import" href="comicorama-styles.html">
 
+<link rel="import" href="comicorama-book-data.html">
+
 <dom-module id="comicorama-book-menu-page">
   <template>
     <style include="comicorama-styles">
@@ -14,7 +16,7 @@
         @apply(--layout-center-justified);
       }
 
-      .comicorama-menu-container {
+      .container {
         display: block;
         @apply(--layout-flex);
         @apply(--layout-vertical);
@@ -37,22 +39,9 @@
           color: #000000;
         };
       }
-
-      .data-container {
-        @apply(--layout-horizontal);
-        @apply(--layout-justified);
-        padding: 8px;
-        @apply(--comicorama-font);
-        text-transform: uppercase;
-        cursor: default;
-      }
-
-      .data-container div {
-        padding: 8px;
-      }
     </style>
 
-    <div class="comicorama-menu-container">
+    <div class="container">
       <comicorama-menu selected="{{menuSelected}}">
         <comicorama-menu-item title="Stories" route-path="#stories" hidden$="[[!data.book]]"></comicorama-menu-item>
         <comicorama-menu-item title="Authors" route-path="#authors" hidden$="[[!data.author]]"></comicorama-menu-item>
@@ -60,15 +49,7 @@
         <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
       </comicorama-menu>
     </div>
-    <div class="data-container">
-      <div hidden$="[[!data.language]]">[[data.language]]</div>
-      <div hidden$="[[!data.pages]]">[[data.pages]] pages</div>
-      <div hidden$="[[!getBookColor(data)]]">[[getBookColor(data)]]</div>
-      <div hidden$="[[!getBookBinding(data)]]">[[getBookBinding(data)]]</div>
-      <div hidden$="[[!data.width || !data.height]]">[[data.width]] X [[data.height]]</div>
-      <div hidden$="[[!data.published_year]]"><span hidden$="[[!data.published_month]]"><span hidden$="[[!data.published_day]]">[[data.published_day]]/</span>[[data.published_month]]/</span>[[data.published_year]]</div>
-      <div hidden$="[[!data.publisher.name]]">[[data.publisher.name]]</div>
-    </div>
+    <comicorama-book-data data="[[data]]"></comicorama-book-data>
   </template>
 
   <script>

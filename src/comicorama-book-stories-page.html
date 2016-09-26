@@ -7,6 +7,8 @@
 
 <link rel="import" href="comicorama-styles.html">
 
+<link rel="import" href="comicorama-book-data.html">
+
 <dom-module id="comicorama-book-stories-page">
   <template>
     <style include="comicorama-styles">
@@ -39,24 +41,29 @@
       }
     </style>
 
-    <div class="comicorama-book-page-header">
-      <span class="title">Stories</span>
-      <button is="paper-icon-button-light" on-tap="close" class="close">
-        <iron-icon icon="close"></iron-icon>
-      </button>
+    <div class="comicorama-book-page-container">
+      <div class="comicorama-book-page-header">
+        <span class="title">Stories</span>
+        <button is="paper-icon-button-light" on-tap="close" class="close">
+          <iron-icon icon="close"></iron-icon>
+        </button>
+      </div>
+      <div class="comicorama-book-page-content">
+        <ol>
+          <template is="dom-repeat" items="[[data.book]]" as="book">
+            <li>
+              <div class="title">[[getBookTitle(book)]]</div>
+              <div class="credits-container">
+                <template is="dom-repeat" items="[[book.author]]" as="author">
+                  <div class="author"><span class="credit">[[author.credit]]&nbsp;</span><a href="[[getAuthorBooksRoutePath(author)]]" class="comicorama-link">[[author.name]]</a></div>
+                </template>
+              </div>
+            </li>
+          </template>
+        </ol>
+      </div>
+      <comicorama-book-data data="[[data]]"></comicorama-book-data>
     </div>
-    <ol>
-      <template is="dom-repeat" items="[[data.book]]" as="book">
-        <li>
-          <div class="title">[[getBookTitle(book)]]</div>
-          <div class="credits-container">
-            <template is="dom-repeat" items="[[book.author]]" as="author">
-              <div class="author"><span class="credit">[[author.credit]]&nbsp;</span><a href="[[getAuthorBooksRoutePath(author)]]" class="comicorama-link">[[author.name]]</a></div>
-            </template>
-          </div>
-        </li>
-      </template>
-    </ol>
   </template>
 
   <script>

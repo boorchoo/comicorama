@@ -1,0 +1,59 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="comicorama-common-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<dom-module id="comicorama-book-data">
+  <template>
+    <style include="comicorama-styles">
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+        padding: 16px;
+        padding-left: 4px;
+        @apply(--comicorama-font);
+        text-transform: uppercase;
+        cursor: default;
+      }
+
+      div {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      div:first-child {
+        padding-left: 0;
+      }
+
+      div:last-child {
+        padding-right: 0;
+      }
+    </style>
+
+    <div hidden$="[[!data.language]]">[[data.language]]</div>
+    <div hidden$="[[!data.pages]]">[[data.pages]] pages</div>
+    <div hidden$="[[!getBookColor(data)]]">[[getBookColor(data)]]</div>
+    <div hidden$="[[!getBookBinding(data)]]">[[getBookBinding(data)]]</div>
+    <div hidden$="[[!data.width || !data.height]]">[[data.width]] X [[data.height]]</div>
+    <div hidden$="[[!data.published_year]]"><span hidden$="[[!data.published_month]]"><span hidden$="[[!data.published_day]]">[[data.published_day]]/</span>[[data.published_month]]/</span>[[data.published_year]]</div>
+    <div hidden$="[[!data.publisher.name]]">[[data.publisher.name]]</div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-book-data',
+      properties: {
+        data: {
+          type: Object,
+          notify: true,
+          value: null
+        }
+      },
+      behaviors: [
+        ComicoramaCommonBehavior
+      ]
+    });
+  </script>
+</dom-module>
