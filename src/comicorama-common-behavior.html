@@ -32,6 +32,32 @@
     getBookCover: function (book) {
       return !book || !book.cover ? null : this.getImage(book.cover);
     },
+    getBookColor: function (book) {
+      if (!book || typeof book.color !== 'number') {
+        return null;
+      }
+      switch (book.color) {
+        case 0:
+          return 'black & white';
+        case 1:
+          return 'grayscale';
+        case 2:
+          return 'color';
+      }
+      return null;
+    },
+    getBookBinding: function (book) {
+      if (!book || typeof book.binding !== 'number') {
+        return null;
+      }
+      switch (book.binding) {
+        case 0:
+          return 'paperback';
+        case 1:
+          return 'hardcover';
+      }
+      return null;
+    },
     getBookRoutePath: function (book) {
       return !book || !book.idbook ? null : '/book/' + book.idbook;
     }

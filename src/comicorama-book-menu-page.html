@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="comicorama-page-behavior.html">
+<link rel="import" href="comicorama-common-behavior.html">
 
 <link rel="import" href="comicorama-styles.html">
 
@@ -9,6 +10,13 @@
     <style include="comicorama-styles">
       :host {
         display: block;
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      .comicorama-menu-container {
+        display: block;
+        @apply(--layout-flex);
         @apply(--layout-vertical);
         @apply(--layout-center-justified);
       }
@@ -29,14 +37,38 @@
           color: #000000;
         };
       }
+
+      .data-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+        padding: 8px;
+        @apply(--comicorama-font);
+        text-transform: uppercase;
+        cursor: default;
+      }
+
+      .data-container div {
+        padding: 8px;
+      }
     </style>
 
-    <comicorama-menu selected="{{menuSelected}}">
-      <comicorama-menu-item title="Stories" route-path="#stories" hidden$="[[!data.book]]"></comicorama-menu-item>
-      <comicorama-menu-item title="Authors" route-path="#authors" hidden$="[[!data.author]]"></comicorama-menu-item>
-      <comicorama-menu-item title="Related" route-path="#related" hidden$="[[!data.related_book]]"></comicorama-menu-item>
-      <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
-    </comicorama-menu>
+    <div class="comicorama-menu-container">
+      <comicorama-menu selected="{{menuSelected}}">
+        <comicorama-menu-item title="Stories" route-path="#stories" hidden$="[[!data.book]]"></comicorama-menu-item>
+        <comicorama-menu-item title="Authors" route-path="#authors" hidden$="[[!data.author]]"></comicorama-menu-item>
+        <comicorama-menu-item title="Related" route-path="#related" hidden$="[[!data.related_book]]"></comicorama-menu-item>
+        <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
+      </comicorama-menu>
+    </div>
+    <div class="data-container">
+      <div hidden$="[[!data.language]]">[[data.language]]</div>
+      <div hidden$="[[!data.pages]]">[[data.pages]] pages</div>
+      <div hidden$="[[!getBookColor(data)]]">[[getBookColor(data)]]</div>
+      <div hidden$="[[!getBookBinding(data)]]">[[getBookBinding(data)]]</div>
+      <div hidden$="[[!data.width || !data.height]]">[[data.width]] X [[data.height]]</div>
+      <div hidden$="[[!data.published_year]]"><span hidden$="[[!data.published_month]]"><span hidden$="[[!data.published_day]]">[[data.published_day]]/</span>[[data.published_month]]/</span>[[data.published_year]]</div>
+      <div hidden$="[[!data.publisher.name]]">[[data.publisher.name]]</div>
+    </div>
   </template>
 
   <script>
@@ -70,7 +102,8 @@
         }
       },
       behaviors: [
-        ComicoramaPageBehavior
+        ComicoramaPageBehavior,
+        ComicoramaCommonBehavior
       ],
       onEntryStart: function () {
         this.menuSelected = null;
