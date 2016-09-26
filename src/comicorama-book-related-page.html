@@ -28,8 +28,8 @@
       </button>
     </div>
     <comicorama-list disabled="{{offscreen}}">
-      <template is="dom-repeat" items="[[data.related_book]]">
-        <comicorama-list-item front-cover="[[getBookCover(item)]]" back-cover="[[getBookCover(item)]]" route-path="[[getBookRoutePath(item)]]"></comicorama-list-item>
+      <template is="dom-repeat" items="[[data.related_book]]" as="book" filter="bookHasCover">
+        <comicorama-list-item front-cover="[[getBookCover(book)]]" back-cover="[[getBookCover(book)]]" route-path="[[getBookRoutePath(book)]]"></comicorama-list-item>
       </template>
     </comicorama-list>
   </template>
@@ -63,6 +63,9 @@
         ComicoramaPageBehavior,
         ComicoramaCommonBehavior
       ],
+      bookHasCover: function (book) {
+        return !(!book || !book.cover);
+      },
       close: function() {
         this.fire('comicorama-change-route', {
           path: '#menu'

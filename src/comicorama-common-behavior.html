@@ -20,11 +20,9 @@
         return null;
       }
       var title = null;
-      if (book.series && book.series[0] && book.series[0].title) {
-        title = book.series[0].title;
-        if (book.series[0].number) {
-          title = (!title ? '' : title + ' ') + book.series[0].number;    
-        }
+      if (book.series && book.series[0] && book.series[0].title && book.series[0].number) {
+        title = (!title ? '' : title + ' ') + book.series[0].title;
+        title = (!title ? '' : title + ' ') + book.series[0].number;    
       }
       if (book.title) {
         title = (!title ? '' : title + ': ') + book.title;
