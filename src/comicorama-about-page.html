@@ -95,14 +95,11 @@
       }
       #story.item-selected { left: 0; top: 0; }
       
-      #story .title {
-        font-family: 'Caveat', cursive;
+      #story .title { 
+        font-family: 'Kalam', cursive;
+        font-size: 4rem;
+        text-transform: none;
         color: var(--comicorama-accent-color);
-      }
-
-      #story .content {
-        font-family: 'Caveat', cursive;
-        font-size: 1.5rem;
       }
 
       #wide { left: 33.33%; top: 0; }
@@ -142,8 +139,8 @@
 
     <comicorama-fixed-aspect-ratio-container id="main" aspect-ratio="0.4417">
       <iron-selector id="selector" multi selected-values="{{selected}}" on-iron-select="_onIronSelect" on-iron-deselect="_onIronDeselect">
-        <comicorama-fixed-aspect-ratio-container id="story" class="container" aspect-ratio="0.6625" title="True story" on-tap="story">
-          <div class="title" style="text-transform: none; font-size: 4rem;">True story</div>
+        <comicorama-fixed-aspect-ratio-container id="story" class="container" aspect-ratio="0.6625" title="True story" route-path="/truestory">
+          <div class="title">True story</div>
         </comicorama-fixed-aspect-ratio-container>
         <comicorama-fixed-aspect-ratio-container id="wide" class="container" aspect-ratio="0.6625" title="Wide view of the world of comics">
           <div class="title">Wide view of<br>the world of<br>comics</div>
@@ -241,6 +238,14 @@
       },
       _onIronSelect: function (e) {
         var item = e.detail.item;
+
+        var routePath = item.getAttribute('route-path');
+        if (routePath) {
+          this.fire('comicorama-change-route', {
+            path: routePath
+          });
+        }
+
         if (item._deselectAnimation) {
           this.toggleClass('deselect-transition', false, item);
           item._deselectAnimation.cancel();
@@ -300,11 +305,6 @@
         }, delay);
 
         e.stopPropagation();
-      },
-      story: function () {
-        this.fire('comicorama-change-route', {
-          path: '/truestory'
-        });
       }
     });
   </script>
