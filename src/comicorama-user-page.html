@@ -63,18 +63,18 @@
       }
 
       comicorama-menu-item {
-        --comicorama-menu-item-title: {
+        --comicorama-menu-item-text: {
           @apply(--comicorama-font-title2);
           line-height: 6rem;
           color: #b3b3b3;
           transition: color 0.5s;
         };
 
-        --comicorama-menu-item-title-active: {
+        --comicorama-menu-item-text-active: {
           color: #000000;
         };
 
-        --comicorama-menu-item-img: {
+        --comicorama-menu-item-image: {
           height: 46px;
           padding-left: 16px;
         };
@@ -90,9 +90,9 @@
     </div>
     <div class="menu-container">
       <comicorama-menu>
-        <comicorama-menu-item hidden$="[[user]]" title="Continue&nbsp;with" img="/img/facebook-logo.png" instant on-tap="login"></comicorama-menu-item>
-        <comicorama-menu-item hidden$="[[!user]]" title="Sign&nbsp;out" instant on-tap="logout"></comicorama-menu-item>
-        <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
+        <comicorama-menu-item hidden$="[[user]]" text="Continue&nbsp;with" image="/img/facebook-logo.png" instant on-tap="login"></comicorama-menu-item>
+        <comicorama-menu-item hidden$="[[!user]]" text="Sign&nbsp;out" instant on-tap="logout"></comicorama-menu-item>
+        <comicorama-menu-item text="Back" route-path="_back" instant></comicorama-menu-item>
       </comicorama-menu>
     </div>
   </template>

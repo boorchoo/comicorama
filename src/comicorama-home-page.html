@@ -44,14 +44,14 @@
       }
 
       comicorama-menu-item {
-        --comicorama-menu-item-title: {
+        --comicorama-menu-item-text: {
           @apply(--comicorama-font-title2);
           line-height: 6rem;
           color: #b3b3b3;
           transition: color 0.5s;
         };
 
-        --comicorama-menu-item-title-active: {
+        --comicorama-menu-item-text-active: {
           color: #000000;
         };
       }
@@ -69,16 +69,16 @@
       on-neon-animation-finish="_stopPropagation">
       <neon-animatable id="mainMenuPage" class="menu-page" animation-config="{{mainMenuPageAnimationConfig}}">
         <comicorama-menu selected="{{mainMenuSelected}}">
-          <comicorama-menu-item title="Browse" route-path="#browseMenuPage"></comicorama-menu-item>
-          <comicorama-menu-item title="Search" disabled></comicorama-menu-item>
-          <comicorama-menu-item title="Playground" disabled></comicorama-menu-item>
+          <comicorama-menu-item text="Browse" route-path="#browseMenuPage"></comicorama-menu-item>
+          <comicorama-menu-item text="Search" disabled></comicorama-menu-item>
+          <comicorama-menu-item text="Playground" disabled></comicorama-menu-item>
         </comicorama-menu>
       </neon-animatable>
       <neon-animatable id="browseMenuPage" class="menu-page" animation-config="{{browseMenuPageAnimationConfig}}">
         <comicorama-menu selected="{{browseMenuSelected}}">
-          <comicorama-menu-item title="Series" route-path="/series"></comicorama-menu-item>
-          <comicorama-menu-item title="Authors" route-path="/authors"></comicorama-menu-item>
-          <comicorama-menu-item title="Back" route-path="#mainMenuPage" instant></comicorama-menu-item>
+          <comicorama-menu-item text="Series" route-path="/series"></comicorama-menu-item>
+          <comicorama-menu-item text="Authors" route-path="/authors"></comicorama-menu-item>
+          <comicorama-menu-item text="Back" route-path="#mainMenuPage" instant></comicorama-menu-item>
         </comicorama-menu>
       </neon-animatable>
     </neon-animated-pages>

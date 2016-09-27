@@ -24,37 +24,37 @@
         width: 0%;
       }
 
-      #container.active .title {
-        @apply(--comicorama-menu-item-title-active);
+      #container.active .text {
+        @apply(--comicorama-menu-item-text-active);
       }
 
-      .title {
+      .text {
         cursor: pointer;
-        @apply(--comicorama-menu-item-title);
+        @apply(--comicorama-menu-item-text);
       }
 
-      .title:hover {
-        @apply(--comicorama-menu-item-title-active);
+      .text:hover {
+        @apply(--comicorama-menu-item-text-active);
       }
 
       img {
         cursor: pointer;
-        @apply(--comicorama-menu-item-img);
+        @apply(--comicorama-menu-item-image);
       }
     </style>
-    <div id="container" class="animated"><span class="title">[[title]]</span><img hidden$="[[!img]]" src="[[img]]"></div>
+    <div id="container" class="animated"><span class="text">[[text]]</span><img hidden$="[[!image]]" src="[[image]]" alt=""></div>
   </template>
 
   <script>
     Polymer({
       is: 'comicorama-menu-item',
       properties: {
-        title: {
+        text: {
           type: String,
           notify: true,
           value: ''
         },
-        img: {
+        image: {
           type: String,
           notify: true,
           value: null

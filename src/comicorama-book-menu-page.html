@@ -28,14 +28,14 @@
       }
 
       comicorama-menu-item {
-        --comicorama-menu-item-title: {
+        --comicorama-menu-item-text: {
           @apply(--comicorama-font-title2);
           line-height: 6rem;
           color: #b3b3b3;
           transition: color 0.5s;
         };
 
-        --comicorama-menu-item-title-active: {
+        --comicorama-menu-item-text-active: {
           color: #000000;
         };
       }
@@ -43,10 +43,10 @@
 
     <div class="container">
       <comicorama-menu selected="{{menuSelected}}">
-        <comicorama-menu-item title="Stories" route-path="#stories" hidden$="[[!data.book]]"></comicorama-menu-item>
-        <comicorama-menu-item title="Authors" route-path="#authors" hidden$="[[!data.author]]"></comicorama-menu-item>
-        <comicorama-menu-item title="Related" route-path="#related" hidden$="[[!data.related_book]]"></comicorama-menu-item>
-        <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
+        <comicorama-menu-item text="Stories" route-path="#stories" hidden$="[[!data.book]]"></comicorama-menu-item>
+        <comicorama-menu-item text="Authors" route-path="#authors" hidden$="[[!data.author]]"></comicorama-menu-item>
+        <comicorama-menu-item text="Related" route-path="#related" hidden$="[[!data.related_book]]"></comicorama-menu-item>
+        <comicorama-menu-item text="Back" route-path="_back" instant></comicorama-menu-item>
       </comicorama-menu>
     </div>
     <comicorama-book-data data="[[data]]"></comicorama-book-data>
