@@ -1,0 +1,129 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="comicorama-page-behavior.html">
+
+<link rel="import" href="comicorama-styles.html">
+
+<link rel="import" href="comicorama-menu.html">
+<link rel="import" href="comicorama-menu-item.html">
+
+<dom-module id="comicorama-user-page">
+  <template>
+    <style include="comicorama-styles">
+      :host {
+        display: block;
+        @apply(--layout-horizontal);
+      }
+
+      .container {
+        position: relative;
+        min-width: 50%;
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      .container img {
+        width: 75%;
+        @apply(--layout-self-center);
+      }
+
+      #user {
+        position: relative;
+        width: 75%;
+        @apply(--layout-self-center);
+      }
+
+      #user img {
+        position: absolute;
+        width: 100%;
+        left: 50%;
+        top: 50%;
+        margin-left: -50%;
+        margin-top: -50%;
+      }
+
+      #user img.user-picture {
+        position: absolute;
+        width: 96%;
+        left: 50%;
+        top: 50%;
+        margin-left: -48%;
+        margin-top: -48%;
+      }
+
+      .menu-container {
+        @apply(--layout-flex);
+        @apply(--layout-vertical);
+        @apply(--layout-center-justified);
+      }
+
+      comicorama-menu {
+        padding-right: 20%;
+      }
+
+      comicorama-menu-item {
+        --comicorama-menu-item-title: {
+          @apply(--comicorama-font-title2);
+          line-height: 6rem;
+          color: #b3b3b3;
+          transition: color 0.5s;
+        };
+
+        --comicorama-menu-item-title-active: {
+          color: #000000;
+        };
+
+        --comicorama-menu-item-img: {
+          height: 46px;
+          padding-left: 16px;
+        };
+      }
+    </style>
+    
+    <div class="container">
+      <img hidden$="[[user]]" src="/img/comicorama-logo.svg">
+      <div id="user" hidden$="[[!user]]">
+        <img class="user-picture" src="[[user.picture]]?type=large">
+        <img src="/img/comicorama-user.svg">
+      </div>
+    </div>
+    <div class="menu-container">
+      <comicorama-menu>
+        <comicorama-menu-item hidden$="[[user]]" title="Continue&nbsp;with" img="/img/facebook-logo.png" instant on-tap="login"></comicorama-menu-item>
+        <comicorama-menu-item hidden$="[[!user]]" title="Sign&nbsp;out" instant on-tap="logout"></comicorama-menu-item>
+        <comicorama-menu-item title="Back" route-path="_back" instant></comicorama-menu-item>
+      </comicorama-menu>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'comicorama-user-page',
+      properties: {
+        user: {
+          type: Object,
+          notify: true,
+          observer: '_onUserChanged',
+          value: null
+        }
+      },
+      behaviors: [
+        ComicoramaPageBehavior
+      ],
+      _onUserChanged: function () {
+        if (!this.user) {
+          this.title = 'Welcome to Comicorama';
+        } else {
+          this.title = this.user.firstName + ' ' + this.user.lastName;
+        }
+      },
+      login: function () {
+        this.fire('comicorama-user-login');
+      },
+      logout: function () {
+        this.fire('comicorama-user-logout');
+      }
+    });
+  </script>
+</dom-module>

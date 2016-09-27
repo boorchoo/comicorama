@@ -36,8 +36,13 @@
       .title:hover {
         @apply(--comicorama-menu-item-title-active);
       }
+
+      img {
+        cursor: pointer;
+        @apply(--comicorama-menu-item-img);
+      }
     </style>
-    <div id="container" class="animated"><span class="title">[[title]]</span></div>
+    <div id="container" class="animated"><span class="title">[[title]]</span><img hidden$="[[!img]]" src="[[img]]"></div>
   </template>
 
   <script>
@@ -48,6 +53,11 @@
           type: String,
           notify: true,
           value: ''
+        },
+        img: {
+          type: String,
+          notify: true,
+          value: null
         },
         instant: {
           type: Boolean,

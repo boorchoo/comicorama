@@ -9,7 +9,6 @@
 <link rel="import" href="../bower_components/neon-animation/neon-animated-pages.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button-light.html">
 
 <link rel="import" href="comicorama-page-selector-behavior.html">
 <link rel="import" href="comicorama-user-behavior.html">
@@ -18,6 +17,8 @@
 
 <link rel="import" href="comicorama-home-page.html">
 <link rel="import" href="comicorama-about-page.html">
+<link rel="import" href="comicorama-about-story-page.html">
+<link rel="import" href="comicorama-user-page.html">
 <link rel="import" href="comicorama-series-page.html">
 <link rel="import" href="comicorama-authors-page.html">
 <link rel="import" href="comicorama-books-page.html">
@@ -123,18 +124,13 @@
         color: var(--comicorama-accent-color);
       }
 
-      app-toolbar .menu {
+      app-toolbar .user {
         @apply(--layout-self-center);
-        width: 48px;
-        height: 48px;
+        @apply(--comicorama-font-title);
+        font-size: 20px;
       }
 
-      app-toolbar .menu iron-icon {
-        width: 32px;
-        height: 32px;
-      }
-      
-      app-toolbar .menu iron-image {
+      app-toolbar .user iron-image {
         width: 48px;
         height: 48px;
         border-radius: 24px;
@@ -162,71 +158,6 @@
           font-size: var(--comicorama-font-size-title1-small-screen);
         }
       }
-
-      .user {
-        @apply(--layout-vertical);
-        @apply(--layout-center-justified);
-        padding-top: 24px;
-      }
-
-      .user span {
-        @apply(--layout-flex);
-        @apply(--layout-self-end);
-        @apply(--comicorama-font);
-        margin-top: 4px;
-        font-size: 16px;
-        text-transform: none;
-      }
-
-      .user iron-image {
-        @apply(--layout-self-end);
-        width: 48px;
-        height: 48px;
-        border-radius: 24px;
-      }
-
-      app-drawer {
-        --app-drawer-width: 320px;
-        --app-drawer-scrim-background: rgba(0, 0, 0, 0.1);
-        cursor: default;
-      }
-
-      .drawer-items-container {
-        height: 100%;
-        overflow: auto;
-      }
-
-      .drawer-item {
-        @apply(--layout-vertical);
-        @apply(--layout-center-justified);
-        height: 32px;
-        padding: 16px;
-        @apply(--comicorama-font-title);
-        font-size: 20px;
-      }
-      
-      .drawer-item.header {
-        height: var(--comicorama-header-height);
-        padding-top: 0;
-        padding-bottom: 0;
-        margin-bottom: 32px;
-      }
-
-      .drawer-item .comicorama-link {
-        color: var(--comicorama-base-color);
-      }
-
-      .drawer-item .comicorama-link:hover {
-        color: var(--comicorama-base-color);
-      }
-
-      .drawer-item .fb-link {
-        color: #3b5998;
-      }
-
-      .drawer-item .fb-link:hover {
-        color: #3b5998;
-      }
     </style>
 
     <app-location route="{{route}}"></app-location>
@@ -241,10 +172,10 @@
         <app-toolbar>
           <a href="/home" alt=""><img src="/img/comicorama-logo.png" class="logo"/></a>
           <div main-title class="main-title">{{mainTitle}}</div>
-          <button is="paper-icon-button-light" on-tap="toggleDrawer" class="menu">
-            <iron-icon hidden="[[userPictureLoaded]]" icon="menu"></iron-icon>
-            <iron-image hidden$="[[!userPictureLoaded]]" src="[[user.picture]]" loaded="{{userPictureLoaded}}" preload fade sizing="cover"></iron-image>
-          </button>
+          <a href="/user" class="user comicorama-link">
+            <div hidden$="[[user]]">Sign in</div>
+            <iron-image hidden$="[[!user]]" src="[[user.picture]]" preload fade sizing="cover"></iron-image>
+          </a>
         </app-toolbar>
       </app-header>
       <neon-animated-pages id="pages"
@@ -255,6 +186,8 @@
         fallback-selection="home">
         <comicorama-home-page id="home"></comicorama-home-page>
         <comicorama-about-page id="about"></comicorama-about-page>
+        <comicorama-about-story-page id="truestory"></comicorama-about-story-page>
+        <comicorama-user-page id="user" user="{{user}}"></comicorama-user-page>
         <comicorama-series-page id="series"></comicorama-series-page>
         <comicorama-authors-page id="authors"></comicorama-authors-page>
         <comicorama-books-page id="books" route="{{booksRoute}}"></comicorama-books-page>
@@ -273,24 +206,6 @@
       </footer>
     </app-header-layout>
 
-    <app-drawer id="drawer" align="end">
-      <div class="drawer-items-container">
-        <div class="drawer-item header" on-tap="toggleDrawer">
-          <div hidden$="[[user]]">Sign in</div>
-          <div hidden$="[[!user]]" class="user">
-            <iron-image src="[[user.picture]]" preload fade sizing="cover"></iron-image>
-            <span>[[user.firstName]]&nbsp;[[user.lastName]]</span>
-          </div>
-        </div>
-        <div hidden$="[[user]]" class="drawer-item">
-          <div class="comicorama-link fb-link" on-tap="login">Continue with Facebook</div>
-        </div>
-        <div hidden$="[[!user]]" class="drawer-item">
-          <div class="comicorama-link" on-tap="logout">Sign out</div>
-        </div>
-      </div>
-    </app-drawer>
-
     <div id="intro" hidden="[[!intro]]">
       <object id="introObject" type="image/svg+xml" data="/img/comicorama-exlibris.svg"></object>
     </div>
@@ -303,16 +218,12 @@
         ComicoramaPageSelectorBehavior,
         ComicoramaUserBehavior
       ],
-      observers: [
-        '_onUserChanged(user)'
-      ],
       listeners: {
         'comicorama-change-route': '_onChangeRoute',
         'comicorama-change-app-header': '_onChangeAppHeader',
-        'comicorama-change-app-footer': '_onChangeAppFooter'
-      },
-      _onUserChanged: function (user) {
-        this.toggleClass('not-ready', user === false, this.$.userContainer);
+        'comicorama-change-app-footer': '_onChangeAppFooter',
+        'comicorama-user-login': 'login',
+        'comicorama-user-logout': 'logout',
       },
       _onChangeRoute: function (e) {
         var path = !e || !e.detail || !e.detail.path ? null : e.detail.path;
@@ -366,9 +277,6 @@
             this.intro = false;
           }, 1000);
         }, 5000);
-      },
-      toggleDrawer: function () {
-        this.$.drawer.toggle();
       }
     });
   </script>

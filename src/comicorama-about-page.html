@@ -96,8 +96,14 @@
       #story.item-selected { left: 0; top: 0; }
       
       #story .title {
+        font-family: 'Caveat', cursive;
         color: var(--comicorama-accent-color);
-      } 
+      }
+
+      #story .content {
+        font-family: 'Caveat', cursive;
+        font-size: 1.5rem;
+      }
 
       #wide { left: 33.33%; top: 0; }
       #wide.item-selected { left: 0; top: 0; }
@@ -136,18 +142,8 @@
 
     <comicorama-fixed-aspect-ratio-container id="main" aspect-ratio="0.4417">
       <iron-selector id="selector" multi selected-values="{{selected}}" on-iron-select="_onIronSelect" on-iron-deselect="_onIronDeselect">
-        <comicorama-fixed-aspect-ratio-container id="story" class="container" aspect-ratio="0.6625" title="True story">
-          <div class="title">True story</div>
-          <div class="content left">
-            <p>Every good work of software starts by scratching a developer’s personal itch.<br>Eric Raymond</p>
-            <p>It was the summer of 1997. when I held my first comic book. It was the Sandman by Neil Gaiman, volume I.  Can you imagine how I felt after finishing my first story, my first 15 pages of this comic series? When Lord of Dreams escapes from the captivity and starts rebuilding his kingdom? You who have read it, you know.I was so fascinated by Neil’s writing that I wanted to read everything that Neil wrote. I want to read everything that Dave McKean illustrated, that Vertigo published. I want.. It never ends, you know. Even now, when I was read 98 comic books in 76 stories in 1093 pages, I am not done. I have planty stories that are waiting for me. So, now, when I look at this first loved story, I feel the same. I can read it all, and all over again, and I am in Dreamland thanks to Neil, and Sam, and Dave.</p>
-            <p>Years past, and every month or day, I read new comic stories, with the same or new artists, and somehow, I lost track of it. You can not have all of that stories at glance at once, you know. You must stop, and rethink about it. Who wrote Konan The Barbarian? What are the stories in it? How many people illustrated Saga of Swamp thing? Who they are? And for the God’s sake, how many stories I read till now? How can I know?</p>
-          </div>
-          <div class="content right"> 
-            <p>I tried to find the answers online, on web, so my search took plenty of time, with lot of carefully chosed web pages, web pages of one publisher, the other publisher, one author, one more author, one artist.. some comic forums, and I still do not have all the answers.</p> 
-            <p>Then I decided. I had to do something with this.And, I had a lot of luck about my problem, you know, because I am software developer, so it was challenge for me to start thinking about making my own unique library of comics, with research, analysis and all connections, so I can never lose track again.And, here we are.Throughout the history of web, people use data to make more informed decisions. What to read next? Comic data can be found all over the web. Every person can start online search for their next choice. Some of searches are Endless, some of them, if you are lucky, are not. Comicorama gathers relevant informations and wants to make sure that comic data are available on one web page to as many people as possible. All Your comic data in one web page. Web page that you can return to when you want. Your personal studio for reading, review and analysis. Can you imagine it?</p> 
-            <p>Milan</p>
-          </div>
+        <comicorama-fixed-aspect-ratio-container id="story" class="container" aspect-ratio="0.6625" title="True story" on-tap="story">
+          <div class="title" style="text-transform: none; font-size: 4rem;">True story</div>
         </comicorama-fixed-aspect-ratio-container>
         <comicorama-fixed-aspect-ratio-container id="wide" class="container" aspect-ratio="0.6625" title="Wide view of the world of comics">
           <div class="title">Wide view of<br>the world of<br>comics</div>
@@ -304,6 +300,11 @@
         }, delay);
 
         e.stopPropagation();
+      },
+      story: function () {
+        this.fire('comicorama-change-route', {
+          path: '/truestory'
+        });
       }
     });
   </script>
