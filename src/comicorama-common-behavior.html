@@ -1,7 +1,7 @@
 <script>
   ComicoramaCommonBehaviorImpl = {
     getImage: function (uri) {
-      return typeof uri !== 'string' ? null : (uri.substr(0, 5) === 'data:' ? uri : 'http://comicorama-service.local/' + uri);
+      return typeof uri !== 'string' ? null : (uri.substr(0, 5) === 'data:' ? uri : 'http://service.comicorama.net/' + uri);
     },
     getSeriesFrontCover: function (series) {
       return !series || !series.picture || !series.picture[1] ? this.getSeriesBackCover(series) : this.getImage(series.picture[1]);
